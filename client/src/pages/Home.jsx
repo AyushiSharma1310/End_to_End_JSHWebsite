@@ -5,7 +5,8 @@ import TextRibbon from "../components/TextRibbon";
 import Timeline from "../components/WaterTimeline";
 import img1 from "../assets/jsh2025_winners/water1.jpeg";
 import img2 from "../assets/jsh2025_winners/water2.jpeg";
-import img3 from "../assets/jsh2025_winners/b1.png";
+import VideoRibbon from "../components/VideoRibbon";
+
 export default function Home() {
     return (
         <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white text-gray-800">
@@ -18,8 +19,17 @@ export default function Home() {
                     <img src="/logos/logo1.png" alt="logo1" className="h-12" />
                 </div>
 
+{/* Center Menu */}
+                <div className="hidden md:flex items-center gap-6 text-gray-700 font-small">
+                    <a href="#about" className="hover:text-blue-600 transition">About</a>
+                    <a href="#focus" className="hover:text-blue-600 transition">Focus Areas</a>
+                    <a href="#problems" className="hover:text-blue-600 transition">Problem Statements</a>
+                    <a href="#eligibility" className="hover:text-blue-600 transition">Eligibility</a>
+                    <a href="#timeline" className="hover:text-blue-600 transition">Timeline</a>
+                    <a href="#contact" className="hover:text-blue-600 transition">Contact</a>
+                    <a href="#privacy" className="hover:text-blue-600 transition">Privacy Policy</a>
+                </div>
                 
-
                 {/* Title Link */}
                 <a
                     href="https://bharatwin.mowr.gov.in/"
@@ -49,33 +59,22 @@ export default function Home() {
                         Logout
                     </button>
                 </div>
-                        {/* Center Menu */}
-                <div className="hidden md:flex items-center gap-6 text-gray-700 font-small">
-                    <a href="#about" className="hover:text-blue-600 transition">About</a>
-                    <a href="#focus" className="hover:text-blue-600 transition">Focus Areas</a>
-                    <a href="#problems" className="hover:text-blue-600 transition">Problem Statements</a>
-                    <a href="#eligibility" className="hover:text-blue-600 transition">Eligibility</a>
-                    <a href="#timeline" className="hover:text-blue-600 transition">Timeline</a>
-                    <a href="#contact" className="hover:text-blue-600 transition">Contact</a>
-                    <a href="#privacy" className="hover:text-blue-600 transition">Privacy Policy</a>
-                </div>
                 {/* Right Section */}
                 <div className="flex items-right gap-4">
                     <img src="/logos/logo2.png" alt="logo2" className="h-10" />
                     <img src="/logos/logo3.png" alt="logo3" className="h-10" />
                 </div>
 
+
             </nav>
 
             {/* HERO */}
             <section className="pt-32 py-20 px-8">
-
-                <div className="flex flex-col md:flex-row items-center justify-between gap-12 max-w-7xl mx-auto">
+                <div className="flex flex-col md:flex-row items-center justify-between gap-12 max-w-7xl mx-auto w-full">
 
                     {/* LEFT: Content */}
-                    <div className="flex flex-col items-start text-left gap-6 max-w-xl">
-
-                        <h2 className="text-4xl md:text-5xl font-bold text-blue-700">
+                    <div className="flex flex-col items-start text-left gap-6 md:w-1/2">
+                        <h2 className="text-4xl md:text-4xl font-bold text-blue-700">
                             Jal Shakti Hackathon 2026 💧
                         </h2>
 
@@ -89,34 +88,24 @@ export default function Home() {
                         >
                             Join Hackathon 2026
                         </Link>
-
                     </div>
 
-                    {/* RIGHT: Ribbon */}
-                    <div className="overflow-hidden w-full md:w-1/2">
-
-                        <div className="flex w-[100%] animate-slideImages">
-
-                            {[img1, img2, img3].map((img, index) => (
-                                <img
-                                    key={index}
-                                    src={img}
-                                    alt="ribbon"
-                                    className="w-full h-full object-cover flex-shrink-0"
-                                />
-                            ))}
-
+                    {/* RIGHT: Video */}
+                    <div className="w-full md:w-1/2 flex justify-center items-center">
+                        <div className="w-full h-full rounded-3xl shadow-lg overflow-hidden">
+                            <VideoRibbon />
                         </div>
-
                     </div>
 
                 </div>
-
             </section>
 
             {/* RIBBONS */}
-            <TextRibbon />
-            <ImageRibbon />
+            <section className="pt-10py-16 px-6 bg-blue-50">
+                <TextRibbon />
+                <ImageRibbon />
+            </section>
+            
 
             {/* THEMES */}
             <section className="py-16 px-6 bg-blue-50">

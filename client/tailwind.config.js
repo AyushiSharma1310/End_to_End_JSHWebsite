@@ -22,7 +22,8 @@ export default {
           "0%, 25%": { transform: "translateX(0%)" },
           "25%, 50%": { transform: "translateX(-100%)" },
           "50%, 75%": { transform: "translateX(-200%)" },
-          "75%, 100%": { transform: "translateX(0%)" },
+          "75%, 100%": { transform: "translateX(-300%)" },
+          "100%": { transform: "translateX(0%)" },
         },
 
         fadeUp: {
