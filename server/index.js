@@ -15,6 +15,8 @@ app.use(express.json());
     await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS registration_step VARCHAR(20) DEFAULT '1'`);
     await pool.query(`ALTER TABLE users ALTER COLUMN registration_step TYPE VARCHAR(20) USING registration_step::text`);
     await pool.query(`ALTER TABLE users ALTER COLUMN registration_step SET DEFAULT '1'`);
+    await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS role VARCHAR(20) DEFAULT 'participant'`);
+    await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS dashboard_access BOOLEAN DEFAULT false`);
   } catch (err) {
     console.error("Migration error:", err);
   }
@@ -40,9 +42,9 @@ app.post("/register", async (req, res) => {
 
     await pool.query(
       `INSERT INTO users
-      (username, full_name, email, mobile, state, district, city, pincode, gender, password, registration_step)
-      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)`,
-      [username, full_name, email, mobile, null, null, null, null, null, null, '1']
+      (username, full_name, email, mobile, state, district, city, pincode, gender, password, registration_step, role)
+      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)`,
+      [username, full_name, email, mobile, null, null, null, null, null, null, '1', 'participant']
     );
 
     res.json({ success: true, message: "Registered Successfully", username });
@@ -86,18 +88,21 @@ app.post("/update-step2", async (req, res) => {
 });
 
 /* ===============================
-   UPDATE STEP 3
+   UPDATE STEP 3 - PROPOSAL DETAILS
 ================================= */
 app.post("/update-step3", async (req, res) => {
   try {
-    const { username, team_name, team_members } = req.body;
+    const { username, category, organization, organization_address, project_investigator_name, project_investigator_designation } = req.body;
+    console.log("Update step 3 called for username:", username);
 
     const result = await pool.query(
       `UPDATE users
-       SET team_name = $1, team_members = $2, registration_step = '3'
-       WHERE username = $3`,
-      [team_name, team_members, username]
+       SET category = $1, organization = $2, organization_address = $3, project_investigator_name = $4, project_investigator_designation = $5, registration_step = '3'
+       WHERE username = $6`,
+      [category, organization, organization_address, project_investigator_name, project_investigator_designation, username]
     );
+
+    console.log("Update step 3 result:", result.rowCount, "rows affected");
 
     if (result.rowCount === 0) {
       return res.status(404).json({ success: false, message: "User not found" });
@@ -105,8 +110,64 @@ app.post("/update-step3", async (req, res) => {
 
     res.json({ success: true, message: "Step 3 saved" });
   } catch (err) {
-    console.error(err);
+    console.error("Error updating step 3:", err);
     res.status(500).json({ success: false, message: "Error updating step 3" });
+  }
+});
+
+/* ===============================
+   UPDATE STEP 4 - PARTNER DETAILS
+================================= */
+app.post("/update-step4", async (req, res) => {
+  try {
+    const { username, partner_organization, partner_address, partner_investigator_name, partner_investigator_email, partner_investigator_mobile } = req.body;
+    console.log("Update step 4 called for username:", username);
+
+    const result = await pool.query(
+      `UPDATE users
+       SET partner_organization = $1, partner_address = $2, partner_investigator_name = $3, partner_investigator_email = $4, partner_investigator_mobile = $5, registration_step = '4'
+       WHERE username = $6`,
+      [partner_organization, partner_address, partner_investigator_name, partner_investigator_email, partner_investigator_mobile, username]
+    );
+
+    console.log("Update step 4 result:", result.rowCount, "rows affected");
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    res.json({ success: true, message: "Step 4 saved" });
+  } catch (err) {
+    console.error("Error updating step 4:", err);
+    res.status(500).json({ success: false, message: "Error updating step 4" });
+  }
+});
+
+/* ===============================
+   UPDATE STEP 5 - PROPOSAL CONTENT
+================================= */
+app.post("/update-step5", async (req, res) => {
+  try {
+    const { username, proposal_title, problem_statement, additional_info } = req.body;
+    console.log("Update step 5 called for username:", username);
+
+    const result = await pool.query(
+      `UPDATE users
+       SET proposal_title = $1, problem_statement = $2, additional_info = $3, registration_step = '5'
+       WHERE username = $4`,
+      [proposal_title, problem_statement, additional_info, username]
+    );
+
+    console.log("Update step 5 result:", result.rowCount, "rows affected");
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    res.json({ success: true, message: "Step 5 saved" });
+  } catch (err) {
+    console.error("Error updating step 5:", err);
+    res.status(500).json({ success: false, message: "Error updating step 5" });
   }
 });
 
@@ -149,7 +210,7 @@ app.get("/user-progress", async (req, res) => {
 
   try {
     const result = await pool.query(
-      `SELECT full_name, email, mobile, state, district, city, pincode, gender, team_name, team_members, registration_step
+      `SELECT full_name, email, mobile, state, district, city, pincode, gender, category, organization, organization_address, project_investigator_name, project_investigator_designation, partner_organization, partner_address, partner_investigator_name, partner_investigator_email, partner_investigator_mobile, proposal_title, problem_statement, additional_info, registration_step, role
        FROM users
        WHERE username = $1`,
       [username]
@@ -272,10 +333,30 @@ app.post("/verify-otp", async (req, res) => {
     });
   }
 
-  res.json({
-    success: true,
-    message: "Login successful",
-  });
+  try {
+    const result = await pool.query(
+      "SELECT role, dashboard_access, registration_step FROM users WHERE username = $1",
+      [username]
+    );
+
+    if (result.rows.length === 0) {
+      return res.json({
+        success: false,
+        message: "User not found ❌",
+      });
+    }
+
+    res.json({
+      success: true,
+      message: "Login successful",
+      role: result.rows[0].role,
+      dashboard_access: result.rows[0].dashboard_access,
+      registration_step: result.rows[0].registration_step,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
 });
 
 
@@ -320,6 +401,517 @@ app.post("/login", async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Server error ❌",
+    });
+  }
+});
+
+/* ===============================
+   CREATE ADMIN
+================================= */
+app.post("/create-admin", async (req, res) => {
+  try {
+    const { full_name, email, mobile, password, dashboard_access = false } = req.body;
+
+    // Check if admin already exists
+    const existingAdmin = await pool.query(
+      "SELECT * FROM users WHERE email = $1 AND role = 'admin'",
+      [email]
+    );
+
+    if (existingAdmin.rows.length > 0) {
+      return res.status(400).json({
+        success: false,
+        message: "Admin already exists with this email",
+      });
+    }
+
+    const username = await generateUsername();
+
+    await pool.query(
+      `INSERT INTO users
+      (username, full_name, email, mobile, password, role, registration_step, dashboard_access)
+      VALUES ($1, $2, $3, $4, $5, 'admin', 'completed', $6)`,
+      [username, full_name, email, mobile, password, dashboard_access]
+    );
+
+    res.json({
+      success: true,
+      message: "Admin created successfully",
+      username,
+      dashboard_access
+    });
+  } catch (err) {
+    console.error(err);
+
+    if (err.code === "23505") {
+      return res.status(400).json({
+        success: false,
+        message: "Email already registered",
+      });
+    }
+
+    res.status(500).json({
+      success: false,
+      message: "Error creating admin"
+    });
+  }
+});
+
+/* ===============================
+   MIDDLEWARE: CHECK ADMIN ROLE
+================================= */
+const requireAdmin = async (req, res, next) => {
+  const { username } = req.body;
+
+  if (!username) {
+    return res.status(401).json({
+      success: false,
+      message: "Authentication required"
+    });
+  }
+
+  try {
+    const result = await pool.query(
+      "SELECT role FROM users WHERE username = $1",
+      [username]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found"
+      });
+    }
+
+    if (result.rows[0].role !== 'admin') {
+      return res.status(403).json({
+        success: false,
+        message: "Admin access required"
+      });
+    }
+
+    next();
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      message: "Server error"
+    });
+  }
+};
+
+/* ===============================
+   MIDDLEWARE: CHECK DASHBOARD ACCESS
+================================= */
+const requireDashboardAccess = async (req, res, next) => {
+  const { username } = req.body;
+
+  if (!username) {
+    return res.status(401).json({
+      success: false,
+      message: "Authentication required"
+    });
+  }
+
+  try {
+    const result = await pool.query(
+      "SELECT role, dashboard_access FROM users WHERE username = $1",
+      [username]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found"
+      });
+    }
+
+    const user = result.rows[0];
+
+    if (user.role !== 'admin') {
+      return res.status(403).json({
+        success: false,
+        message: "Admin access required"
+      });
+    }
+
+    if (!user.dashboard_access) {
+      return res.status(403).json({
+        success: false,
+        message: "Dashboard access not granted"
+      });
+    }
+
+    next();
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      message: "Server error"
+    });
+  }
+};
+
+/* ===============================
+   ADMIN DASHBOARD DATA
+================================= */
+app.get("/admin/dashboard", requireDashboardAccess, async (req, res) => {
+  try {
+    // Get total participants
+    const totalParticipants = await pool.query(
+      "SELECT COUNT(*) FROM users WHERE role = 'participant'"
+    );
+
+    // Get registration statistics
+    const registrationStats = await pool.query(
+      "SELECT registration_step, COUNT(*) FROM users WHERE role = 'participant' GROUP BY registration_step"
+    );
+
+    // Get recent registrations
+    const recentRegistrations = await pool.query(
+      "SELECT username, full_name, email, registration_step, created_at FROM users WHERE role = 'participant' ORDER BY created_at DESC LIMIT 10"
+    );
+
+    res.json({
+      success: true,
+      data: {
+        totalParticipants: parseInt(totalParticipants.rows[0].count),
+        registrationStats: registrationStats.rows,
+        recentRegistrations: recentRegistrations.rows
+      }
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      message: "Error fetching dashboard data"
+    });
+  }
+});
+
+/* ===============================
+   GET ALL ADMINS (ADMIN ONLY)
+================================= */
+app.get("/admin/list", requireAdmin, async (req, res) => {
+  try {
+    const result = await pool.query(
+      `SELECT username, full_name, email, mobile, dashboard_access, created_at
+       FROM users
+       WHERE role = 'admin'
+       ORDER BY created_at DESC`
+    );
+
+    res.json({
+      success: true,
+      data: result.rows
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      message: "Error fetching admins"
+    });
+  }
+});
+
+/* ===============================
+   GRANT DASHBOARD ACCESS (ADMIN ONLY)
+================================= */
+app.post("/admin/grant-dashboard-access", requireAdmin, async (req, res) => {
+  try {
+    const { admin_username, granted_by } = req.body;
+
+    if (!admin_username) {
+      return res.status(400).json({
+        success: false,
+        message: "Admin username is required"
+      });
+    }
+
+    // Verify the admin exists and is actually an admin
+    const adminCheck = await pool.query(
+      "SELECT * FROM users WHERE username = $1 AND role = 'admin'",
+      [admin_username]
+    );
+
+    if (adminCheck.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Admin not found"
+      });
+    }
+
+    // Grant dashboard access
+    await pool.query(
+      "UPDATE users SET dashboard_access = true WHERE username = $1",
+      [admin_username]
+    );
+
+    res.json({
+      success: true,
+      message: `Dashboard access granted to ${admin_username}`
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      message: "Error granting dashboard access"
+    });
+  }
+});
+
+/* ===============================
+   REVOKE DASHBOARD ACCESS (ADMIN ONLY)
+================================= */
+app.post("/admin/revoke-dashboard-access", requireAdmin, async (req, res) => {
+  try {
+    const { admin_username, revoked_by } = req.body;
+
+    if (!admin_username) {
+      return res.status(400).json({
+        success: false,
+        message: "Admin username is required"
+      });
+    }
+
+    // Verify the admin exists
+    const adminCheck = await pool.query(
+      "SELECT * FROM users WHERE username = $1 AND role = 'admin'",
+      [admin_username]
+    );
+
+    if (adminCheck.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Admin not found"
+      });
+    }
+
+    // Revoke dashboard access
+    await pool.query(
+      "UPDATE users SET dashboard_access = false WHERE username = $1",
+      [admin_username]
+    );
+
+    res.json({
+      success: true,
+      message: `Dashboard access revoked from ${admin_username}`
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      message: "Error revoking dashboard access"
+    });
+  }
+});
+
+/* =============================== 
+   MIDDLEWARE: CHECK OWNER ROLE
+================================= */
+const requireOwner = async (req, res, next) => {
+  const { username } = req.body;
+
+  if (!username) {
+    return res.status(401).json({
+      success: false,
+      message: "Authentication required"
+    });
+  }
+
+  try {
+    const result = await pool.query(
+      "SELECT role FROM users WHERE username = $1",
+      [username]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found"
+      });
+    }
+
+    if (result.rows[0].role !== 'owner') {
+      return res.status(403).json({
+        success: false,
+        message: "Owner access required"
+      });
+    }
+
+    next();
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      message: "Server error"
+    });
+  }
+};
+
+/* ===============================
+   OWNER: GET ALL USERS
+================================= */
+app.get("/owner/users", requireOwner, async (req, res) => {
+  try {
+    const result = await pool.query(
+      "SELECT username, full_name, email, role, dashboard_access, created_at FROM users ORDER BY created_at DESC"
+    );
+
+    res.json({
+      success: true,
+      users: result.rows
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      message: "Error fetching users"
+    });
+  }
+});
+
+/* ===============================
+   OWNER: GRANT ADMIN ACCESS
+================================= */
+app.post("/owner/grant-admin", requireOwner, async (req, res) => {
+  const { targetUsername } = req.body;
+
+  if (!targetUsername) {
+    return res.status(400).json({
+      success: false,
+      message: "Target username required"
+    });
+  }
+
+  try {
+    // Check if target user exists
+    const userCheck = await pool.query(
+      "SELECT role FROM users WHERE username = $1",
+      [targetUsername]
+    );
+
+    if (userCheck.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Target user not found"
+      });
+    }
+
+    if (userCheck.rows[0].role === 'owner') {
+      return res.status(400).json({
+        success: false,
+        message: "Cannot modify owner role"
+      });
+    }
+
+    // Update user to admin with dashboard access
+    await pool.query(
+      "UPDATE users SET role = 'admin', dashboard_access = true WHERE username = $1",
+      [targetUsername]
+    );
+
+    res.json({
+      success: true,
+      message: `Admin access granted to ${targetUsername}`
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      message: "Error granting admin access"
+    });
+  }
+});
+
+/* ===============================
+   OWNER: REVOKE ADMIN ACCESS
+================================= */
+app.post("/owner/revoke-admin", requireOwner, async (req, res) => {
+  const { targetUsername } = req.body;
+
+  if (!targetUsername) {
+    return res.status(400).json({
+      success: false,
+      message: "Target username required"
+    });
+  }
+
+  try {
+    // Check if target user exists
+    const userCheck = await pool.query(
+      "SELECT role FROM users WHERE username = $1",
+      [targetUsername]
+    );
+
+    if (userCheck.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Target user not found"
+      });
+    }
+
+    if (userCheck.rows[0].role === 'owner') {
+      return res.status(400).json({
+        success: false,
+        message: "Cannot modify owner role"
+      });
+    }
+
+    // Update user back to participant
+    await pool.query(
+      "UPDATE users SET role = 'participant', dashboard_access = false WHERE username = $1",
+      [targetUsername]
+    );
+
+    res.json({
+      success: true,
+      message: `Admin access revoked from ${targetUsername}`
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      message: "Error revoking admin access"
+    });
+  }
+});
+
+/* ===============================
+   USER PROFILE ENDPOINTS
+================================= */
+app.get("/user/profile", async (req, res) => {
+  const { username } = req.query;
+
+  if (!username) {
+    return res.status(400).json({
+      success: false,
+      message: "Username required"
+    });
+  }
+
+  try {
+    const result = await pool.query(
+      "SELECT username, full_name, email, mobile, state, district, city, pincode, gender, team_name, team_members, registration_step, created_at FROM users WHERE username = $1",
+      [username]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found"
+      });
+    }
+
+    res.json({
+      success: true,
+      user: result.rows[0]
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      message: "Server error"
     });
   }
 });

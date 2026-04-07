@@ -6,8 +6,18 @@ import Timeline from "../components/WaterTimeline";
 import img1 from "../assets/jsh2025_winners/water1.jpeg";
 import img2 from "../assets/jsh2025_winners/water2.jpeg";
 import VideoRibbon from "../components/VideoRibbon";
+import { useState, useEffect } from "react";
 
 export default function Home() {
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [userRole, setUserRole] = useState(null);
+
+    useEffect(() => {
+        const loggedIn = localStorage.getItem("isLoggedIn") === "true";
+        const role = localStorage.getItem("userRole");
+        setIsLoggedIn(loggedIn);
+        setUserRole(role);
+    }, []);
     return (
         <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white text-gray-800">
 
@@ -42,22 +52,45 @@ export default function Home() {
 
                 {/* Buttons */}
                 <div className="flex items-center gap-2">
-                    <Link
-                        to="/login"
-                        className="bg-blue-600 text-white px-5 py-2 rounded-xl hover:bg-blue-700 transition"
-                    >
-                        Register
-                    </Link>
-
-                    <button
-                        className="bg-blue-600 text-white px-5 py-2 rounded-xl hover:bg-blue-700 transition"
-                        onClick={() => {
-                            localStorage.removeItem("isLoggedIn");
-                            window.location.href = "/";
-                        }}
-                    >
-                        Logout
-                    </button>
+                    {!isLoggedIn && (
+                        <>
+                            <Link
+                                to="/login"
+                                className="bg-blue-600 text-white px-5 py-2 rounded-xl hover:bg-blue-700 transition"
+                            >
+                                Register
+                            </Link>
+                            <Link
+                                to="/login"
+                                className="bg-gray-600 text-white px-5 py-2 rounded-xl hover:bg-gray-700 transition"
+                            >
+                                Login
+                            </Link>
+                        </>
+                    )}
+                    {(userRole === "admin" || userRole === "owner") && (
+                        <Link
+                            to="/admin"
+                            className="bg-green-600 text-white px-5 py-2 rounded-xl hover:bg-green-700 transition"
+                        >
+                            Dashboard
+                        </Link>
+                    )}
+                    {isLoggedIn && (
+                        <button
+                            className="bg-red-600 text-white px-5 py-2 rounded-xl hover:bg-red-700 transition"
+                            onClick={() => {
+                                localStorage.removeItem("isLoggedIn");
+                                localStorage.removeItem("username");
+                                localStorage.removeItem("userRole");
+                                localStorage.removeItem("token");
+                                localStorage.removeItem("registrationStep");
+                                window.location.href = "/";
+                            }}
+                        >
+                            Logout
+                        </button>
+                    )}
                 </div>
                 {/* Right Section */}
                 <div className="flex items-right gap-4">

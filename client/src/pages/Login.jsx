@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function Login() {
@@ -10,6 +10,33 @@ export default function Login() {
   const [otp, setOtp] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false); // ✅ NEW
+
+  /* ===============================
+     BROWSER BACK BUTTON HANDLER
+  ================================= */
+  useEffect(() => {
+    // Push a new history state to intercept back button
+    window.history.pushState(null, null, window.location.href);
+
+    const handlePopState = () => {
+      const confirmLogout = window.confirm(
+        "Are you sure you want to leave the login page? You will be logged out. ⚠️"
+      );
+
+      if (confirmLogout) {
+        handleLogout();
+      } else {
+        // Push state again to prevent going back
+        window.history.pushState(null, null, window.location.href);
+      }
+    };
+
+    window.addEventListener("popstate", handlePopState);
+
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, []);
 
   /* ===============================
      SEND OTP (with password)
@@ -98,15 +125,34 @@ export default function Login() {
         // ✅ LOGIN SUCCESS
         localStorage.setItem("isLoggedIn", "true");
         localStorage.setItem("username", username);
+        localStorage.setItem("userRole", data.role);
 
         // You can store token if backend returns it
         if (data.token) {
           localStorage.setItem("token", data.token);
         }
 
-        localStorage.setItem("registrationStep", "2");
-
-        navigate("/register");
+        // Redirect based on role
+        if (data.role === "owner") {
+          // Owners always have full access
+          navigate("/admin");
+        } else if (data.role === "admin") {
+          // Check if admin has dashboard access
+          if (data.dashboard_access) {
+            navigate("/admin");
+          } else {
+            alert("You have admin privileges but dashboard access is not granted yet. Please contact the system administrator.");
+            navigate("/");
+          }
+        } else {
+          // Participant user
+          localStorage.setItem("registrationStep", data.registration_step);
+          if (data.registration_step === "completed") {
+            navigate("/view-submission");
+          } else {
+            navigate("/register");
+          }
+        }
       }
     } catch (err) {
       console.error(err);
@@ -116,16 +162,50 @@ export default function Login() {
     }
   };
 
+  /* ===============================
+     BACK TO PREVIOUS STEP
+  ================================= */
+  const handleBackStep = () => {
+    setStep(step - 1);
+    setOtp("");
+    setError("");
+  };
+
+  /* ===============================
+     LOGOUT
+  ================================= */
+  const handleLogout = () => {
+    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("username");
+    localStorage.removeItem("token");
+    localStorage.removeItem("registrationStep");
+    localStorage.removeItem("userRole");
+    setUsername("");
+    setPassword("");
+    setOtp("");
+    setStep(1);
+    setError("");
+    navigate("/");
+  };
+
   return (
     <div
       className="min-h-screen bg-cover bg-center flex items-center justify-center px-10"
       style={{ backgroundImage: "url('/bg.png')" }}
     >
-      <div className="w-[90%] max-w-[400px]">
+      <div className="p-8 rounded-2xl shadow-lg w-full max-w-xl bg-white/20 backdrop-blur-sm">
 
-        <h1 className="text-2xl font-bold text-blue-800 text-center mb-6">
-          Login 🔐
-        </h1>
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-2xl font-bold text-blue-600">
+            Login 🔐
+          </h1>
+          <button
+            onClick={handleLogout}
+            className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700"
+          >
+            Logout
+          </button>
+        </div>
 
         {/* ERROR MESSAGE */}
         {error && (
@@ -139,7 +219,7 @@ export default function Login() {
             <>
               <input
                 type="text"
-                placeholder="Enter Username"
+                placeholder="Enter Username: jsh26xxxxx"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 className="w-full border p-3 rounded-lg bg-white/80"
@@ -180,6 +260,14 @@ export default function Login() {
                 className="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 disabled:opacity-50"
               >
                 {loading ? "Verifying..." : "Verify & Login"}
+              </button>
+
+              <button
+                onClick={handleBackStep}
+                disabled={loading}
+                className="w-full bg-gray-600 text-white py-3 rounded-lg hover:bg-gray-700 disabled:opacity-50"
+              >
+                ← Back
               </button>
             </>
           )}
