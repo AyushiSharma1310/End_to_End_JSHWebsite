@@ -1,3 +1,4 @@
+import os
 import dash
 from dash import dcc, html, Input, Output, State
 import plotly.graph_objects as go
@@ -12,17 +13,33 @@ app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 
 # Backend API endpoint
 BACKEND_URL = "http://localhost:5000"
+CLIENT_APP_URL = os.getenv("CLIENT_APP_URL", "http://localhost:5173")
+ADMIN_USERNAME = os.getenv("ADMIN_USERNAME", "")
 
-def fetch_dashboard_data(username):
+def fetch_dashboard_data():
     """Fetch dashboard data from backend"""
     try:
-        response = requests.get(f"{BACKEND_URL}/admin/dashboard?username={username}")
+        if not ADMIN_USERNAME:
+            return None
+        response = requests.get(f"{BACKEND_URL}/admin/dashboard?username={ADMIN_USERNAME}")
         if response.status_code == 200:
             data = response.json()
             if data.get("success"):
                 return data.get("data")
     except Exception as e:
         print(f"Error fetching data: {e}")
+    return None
+
+def fetch_user_profile(target_username):
+    """Verify the target user exists in DB"""
+    try:
+        response = requests.get(f"{BACKEND_URL}/user/profile?username={target_username}")
+        if response.status_code == 200:
+            data = response.json()
+            if data.get("success"):
+                return data.get("user")
+    except Exception as e:
+        print(f"Error fetching user profile: {e}")
     return None
 
 def create_kpi_card(title, value, color="primary"):
@@ -192,7 +209,17 @@ app.layout = dbc.Container(
                     className="mb-3"
                 ),
 
-                dbc.Button("Load Dashboard", id="load-btn", color="primary", className="w-100 mb-4"),
+                dbc.Button("Load Dashboard", id="load-btn", color="primary", className="w-100"),
+                dbc.Button(
+                    "Download User Review PDF",
+                    id="download-review-btn",
+                    href="#",
+                    target="_blank",
+                    color="success",
+                    className="w-100 mt-2 mb-1",
+                    disabled=True
+                ),
+                html.Small("Load a username to enable download.", className="text-muted d-block mb-4", id="download-help"),
 
                 html.Hr(),
 
@@ -299,21 +326,33 @@ app.layout = dbc.Container(
      Output("pie-chart", "figure"),
      Output("gantt-chart", "figure"),
      Output("heatmap-chart", "figure"),
-     Output("summary-table", "children")],
+     Output("summary-table", "children"),
+     Output("download-review-btn", "href"),
+     Output("download-review-btn", "disabled"),
+     Output("download-review-btn", "title"),
+     Output("download-help", "children")],
     Input("load-btn", "n_clicks"),
     State("username-input", "value"),
     prevent_initial_call=True
 )
 def update_dashboard(n_clicks, username):
     """Update all dashboard components"""
-    if not username:
-        return None, "Please enter a username", {}, {}, {}, {}, ""
-    
-    # Fetch data
-    data = fetch_dashboard_data(username)
-    
+    if not username or not str(username).strip():
+        return None, "Please enter a username", {}, {}, {}, {}, "", "#", True, "Enter a username and click Load Dashboard", "Load a username to enable download."
+
+    cleaned_username = str(username).strip()
+
+    # Verify target user exists
+    target_user = fetch_user_profile(cleaned_username)
+    if not target_user:
+        return None, "No user data found for that username", {}, {}, {}, {}, "", "#", True, "User not found", "Please check the username and try again."
+
+    # Fetch dashboard data (uses ADMIN_USERNAME for auth)
+    data = fetch_dashboard_data()
+    dashboard_warning = None
     if not data:
-        return None, "No data found or error loading data", {}, {}, {}, {}, ""
+        dashboard_warning = "Dashboard data unavailable (admin auth not set)."
+        data = {"totalParticipants": 0, "registrationStats": [], "recentRegistrations": []}
     
     # Extract data
     total_participants = data.get("totalParticipants", 0)
@@ -371,7 +410,25 @@ def update_dashboard(n_clicks, username):
         className="shadow-sm"
     )
     
-    return data, kpi_cards, bar_fig, pie_fig, gantt_fig, heatmap_fig, summary_table
+    cleaned_username = str(username).strip()
+    download_href = f"{CLIENT_APP_URL}/view-submission?username={cleaned_username}"
+
+    return (
+        data,
+        kpi_cards if not dashboard_warning else html.Div(
+            dashboard_warning,
+            className="text-warning fw-bold"
+        ),
+        bar_fig,
+        pie_fig,
+        gantt_fig,
+        heatmap_fig,
+        summary_table,
+        download_href,
+        False,
+        download_href,
+        f"Ready to download review PDF for {cleaned_username}."
+    )
 
 # Run app
 if __name__ == "__main__":

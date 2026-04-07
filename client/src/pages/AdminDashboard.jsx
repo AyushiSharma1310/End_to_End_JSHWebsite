@@ -11,6 +11,7 @@ export default function AdminDashboard() {
   const [error, setError] = useState("");
   const [activeTab, setActiveTab] = useState("overview");
   const [userRole, setUserRole] = useState("");
+  const dashboardUrl = "http://localhost:8050";
 
   useEffect(() => {
     // Check if user is admin or owner
@@ -252,6 +253,14 @@ export default function AdminDashboard() {
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold text-blue-600">Admin Dashboard</h1>
           <div className="flex gap-2">
+            {userRole === "owner" && (
+              <button
+                onClick={() => window.open(dashboardUrl, "_blank")}
+                className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700"
+              >
+                Open Python Dashboard
+              </button>
+            )}
             <Link
               to="/"
               className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"

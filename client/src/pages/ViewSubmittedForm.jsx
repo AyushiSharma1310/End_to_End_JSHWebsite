@@ -1,29 +1,41 @@
 import { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import html2pdf from "html2pdf.js";
 
 export default function ViewSubmittedForm() {
   const navigate = useNavigate();
+  const location = useLocation();
   const printRef = useRef();
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [downloading, setDownloading] = useState(false);
 
   useEffect(() => {
     // Check if user is logged in
     const isLoggedIn = localStorage.getItem("isLoggedIn");
     const registrationStep = localStorage.getItem("registrationStep");
+    const role = localStorage.getItem("userRole");
+    const params = new URLSearchParams(location.search);
+    const targetUsername = params.get("username");
+    const isAdminView = targetUsername && (role === "admin" || role === "owner");
 
-    if (!isLoggedIn || registrationStep !== "completed") {
+    if (!isLoggedIn) {
       navigate("/");
       return;
     }
 
-    fetchUserData();
-  }, [navigate]);
+    if (!isAdminView && registrationStep !== "completed") {
+      navigate("/");
+      return;
+    }
 
-  const fetchUserData = async () => {
+    fetchUserData(isAdminView ? targetUsername : null);
+  }, [navigate, location.search]);
+
+  const fetchUserData = async (overrideUsername = null) => {
     try {
-      const username = localStorage.getItem("username");
+      const username = overrideUsername || localStorage.getItem("username");
 
       const res = await fetch(`http://localhost:5000/user/profile?username=${username}`);
       const data = await res.json();
@@ -44,6 +56,27 @@ export default function ViewSubmittedForm() {
 
   const handlePrint = () => {
     window.print();
+  };
+
+  const handleDownloadPDF = async () => {
+    setDownloading(true);
+    try {
+      const element = printRef.current;
+      const opt = {
+        margin: 10,
+        filename: `${userData.username}_registration_form.pdf`,
+        image: { type: "jpeg", quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { orientation: "portrait", unit: "mm", format: "a4" },
+      };
+
+      html2pdf().set(opt).from(element).save();
+    } catch (error) {
+      console.error("Error downloading PDF:", error);
+      alert("Failed to download PDF. Please try again.");
+    } finally {
+      setDownloading(false);
+    }
   };
 
   const handleLogout = () => {
@@ -86,8 +119,25 @@ export default function ViewSubmittedForm() {
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold text-blue-600">Your Registration Form</h1>
+          <div>
+            <h1 className="text-3xl font-bold text-blue-600">Registration Form</h1>
+            <div className="text-sm text-gray-600">
+              {userData?.username && `Username: ${userData.username}`}
+            </div>
+          </div>
           <div className="flex gap-3">
+            <button
+              onClick={handleDownloadPDF}
+              disabled={downloading}
+              className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 disabled:bg-gray-400 flex items-center gap-2"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+              {downloading ? "Downloading..." : "Download PDF"}
+            </button>
             <button
               onClick={handlePrint}
               className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 flex items-center gap-2"
@@ -204,7 +254,40 @@ export default function ViewSubmittedForm() {
               </div>
             )}
 
-            {/* Section 5: Submission Status */}
+            {/* Section 5: Proposal Summary */}
+            {(userData.proposal_title || userData.problem_statement || userData.additional_info) && (
+              <div className="mb-8">
+                <h3 className="text-xl font-bold text-blue-600 border-b-2 border-blue-600 pb-3 mb-4">
+                  Proposal Summary
+                </h3>
+                {userData.proposal_title && (
+                  <div className="mb-4">
+                    <label className="block text-sm font-semibold text-gray-700 mb-1">Proposal Title</label>
+                    <p className="text-2xl font-bold text-gray-900 bg-yellow-50 p-4 rounded">
+                      {userData.proposal_title}
+                    </p>
+                  </div>
+                )}
+                {userData.problem_statement && (
+                  <div className="mb-4">
+                    <label className="block text-sm font-semibold text-gray-700 mb-1">Problem Statement</label>
+                    <p className="text-base text-gray-800 bg-gray-50 p-4 rounded whitespace-pre-wrap">
+                      {userData.problem_statement}
+                    </p>
+                  </div>
+                )}
+                {userData.additional_info && (
+                  <div className="mb-4">
+                    <label className="block text-sm font-semibold text-gray-700 mb-1">Additional Info</label>
+                    <p className="text-base text-gray-800 bg-gray-50 p-4 rounded whitespace-pre-wrap">
+                      {userData.additional_info}
+                    </p>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Section 6: Submission Status */}
             <div className="mb-8 print:mb-0">
               <h3 className="text-xl font-bold text-blue-600 border-b-2 border-blue-600 pb-3 mb-4">
                 Submission Status
@@ -239,17 +322,31 @@ export default function ViewSubmittedForm() {
           >
             Go to Home
           </button>
-          <button
-            onClick={handlePrint}
-            className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 flex items-center gap-2"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <polyline points="6 9 6 2 18 2 18 9"></polyline>
-              <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
-              <rect x="6" y="14" width="12" height="8"></rect>
-            </svg>
-            Print Form
-          </button>
+          <div className="flex gap-3">
+            <button
+              onClick={handleDownloadPDF}
+              disabled={downloading}
+              className="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 disabled:bg-gray-400 flex items-center gap-2"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+              {downloading ? "Downloading..." : "Download PDF"}
+            </button>
+            <button
+              onClick={handlePrint}
+              className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 flex items-center gap-2"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <polyline points="6 9 6 2 18 2 18 9"></polyline>
+                <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+                <rect x="6" y="14" width="12" height="8"></rect>
+              </svg>
+              Print Form
+            </button>
+          </div>
         </div>
       </div>
 

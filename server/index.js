@@ -461,7 +461,7 @@ app.post("/create-admin", async (req, res) => {
    MIDDLEWARE: CHECK ADMIN ROLE
 ================================= */
 const requireAdmin = async (req, res, next) => {
-  const { username } = req.body;
+  const username = req.body?.username || req.query?.username;
 
   if (!username) {
     return res.status(401).json({
@@ -504,7 +504,7 @@ const requireAdmin = async (req, res, next) => {
    MIDDLEWARE: CHECK DASHBOARD ACCESS
 ================================= */
 const requireDashboardAccess = async (req, res, next) => {
-  const { username } = req.body;
+  const username = req.body?.username || req.query?.username;
 
   if (!username) {
     return res.status(401).json({
@@ -710,7 +710,7 @@ app.post("/admin/revoke-dashboard-access", requireAdmin, async (req, res) => {
    MIDDLEWARE: CHECK OWNER ROLE
 ================================= */
 const requireOwner = async (req, res, next) => {
-  const { username } = req.body;
+  const username = req.body?.username || req.query?.username;
 
   if (!username) {
     return res.status(401).json({
@@ -892,7 +892,7 @@ app.get("/user/profile", async (req, res) => {
 
   try {
     const result = await pool.query(
-      "SELECT username, full_name, email, mobile, state, district, city, pincode, gender, team_name, team_members, registration_step, created_at FROM users WHERE username = $1",
+      "SELECT username, full_name, email, mobile, state, district, city, pincode, gender, team_name, team_members, registration_step, created_at, category, organization, organization_address, project_investigator_name, project_investigator_designation, partner_organization, partner_address, partner_investigator_name, partner_investigator_email, partner_investigator_mobile, proposal_title, problem_statement, additional_info FROM users WHERE username = $1",
       [username]
     );
 
