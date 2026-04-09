@@ -1,4 +1,4 @@
-import { Droplet, Users, GlassWater, CircleCheckBig, Trophy, Waves, Recycle, CloudRain, Leaf, Cpu, Sprout, Mountain, Building } from "lucide-react";
+import { Droplet, Users, GlassWater, CircleCheckBig, ChevronLeft, ChevronRight, Trophy, Waves, Recycle, CloudRain, Leaf, Cpu, Sprout, Mountain, Building } from "lucide-react";
 import ImageRibbon from "../components/ImageRibbon";
 import { Link } from "react-router-dom";
 import TextRibbon from "../components/TextRibbon";
@@ -94,9 +94,29 @@ export default function Home() {
                 "The use of sludge as a soil conditioner to enrich the soil nutrients and help in improving the productivity is an aspirational goal. An efficient cost effective process/technology may be developed for producing FCO compliant sludge."
             ],
         },
-        
+
 
     ];
+
+    const guidelines = [
+        "Ensure that all submitted proposals clearly define the problem statement and proposed solution with measurable impact.",
+
+        "Participants must register individually or in teams before submitting any project-related documents or prototypes.",
+
+        "All submissions should strictly adhere to the prescribed format and include relevant documentation, datasets, and references.",
+
+        "Teams are encouraged to focus on innovative, scalable, and sustainable solutions aligned with real-world challenges.",
+
+        "Any form of plagiarism or use of unauthorized third-party content will lead to immediate disqualification.",
+
+        "Participants must ensure that their solutions are technically feasible and can be implemented within practical constraints.",
+
+        "Regular updates and progress submissions may be required during different phases of the hackathon timeline.",
+
+        "Teams should be prepared to present their solutions with a working prototype or a well-defined simulation model.",
+
+        "Judging criteria will include innovation, feasibility, impact, scalability, and presentation quality.",
+        "Judging criteria will include innovation, feasibility, impact, scalability, and presentation quality."];
 
 
     useEffect(() => {
@@ -129,7 +149,23 @@ export default function Home() {
 
     const visibleOptions = menuOptions.slice(0, visibleMenuCount);
     const dropdownOptions = menuOptions.slice(visibleMenuCount);
+    const [activeGuideline, setActiveGuideline] = useState(0);
 
+    const [visibleGuidelines, setVisibleGuidelines] = useState([]);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setVisibleGuidelines((prev) => {
+                if (prev.length >= guidelines.length) {
+                    clearInterval(interval);
+                    return prev;
+                }
+                return [...prev, guidelines[prev.length]];
+            });
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, []);
     return (
         <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white text-gray-800">
 
@@ -317,10 +353,10 @@ export default function Home() {
                 style={{ backgroundImage: "url('../public/bg2.jpg')" }}
             >
                 <div className="group mb-12 text-center">
-                    <h2 className="text-3xl font-bold text-white">
+                    <h2 className="text-3xl font-bold text-yellow-900">
                         Focus Areas
                     </h2>
-                    <p className="mx-auto mt-2 max-w-3xl overflow-hidden text-sm leading-relaxed text-white/90 opacity-0 transition-all duration-300 max-h-0 group-hover:max-h-24 group-hover:opacity-100">
+                    <p className="mx-auto mt-2 max-w-3xl overflow-hidden text-sm leading-relaxed text-yellow-900 opacity-0 transition-all duration-300 max-h-0 group-hover:max-h-24 group-hover:opacity-100">
                         Priority domains where teams can frame high-impact solutions in assessment, efficiency, resilience, monitoring, and water quality.
                     </p>
                 </div>
@@ -376,10 +412,10 @@ export default function Home() {
                 style={{ backgroundImage: "url('../public/bg4.png')" }}>
                 <div className="w-full max-w-9xl mx-auto">
                     <div className="group mb-10 text-center">
-                        <h2 className="text-3xl font-bold bg-amber-100 p-4 rounded-full bg-white/90 shadow-lg text-amber-900">
+                        <h2 className="text-3xl font-bold mb-2 pt-6 text-white">
                             Problem Statements
                         </h2>
-                        <p className="mt-3 text-gray-700 text-center max-w-3xl mx-auto text-sm leading-relaxed bg-amber-50 p-4 rounded-lg shadow-sm overflow-hidden opacity-0 transition-all duration-300 max-h-0 group-hover:max-h-40 group-hover:opacity-100">
+                        <p className="max-w-3xl mx-auto text-gray-600 overflow-hidden opacity-0 transition-all duration-300 max-h-0 group-hover:max-h-20 group-hover:opacity-100 pt-2 pb-6 text-sm text-white/90">
                             Applicants may formulate their problem statements by identifying water-related issues, preferably aligned with the given Focus Areas. A few identified problem statements are provided below, which may also be used as a basis for developing new ideas.
                         </p>
                     </div>
@@ -426,6 +462,64 @@ export default function Home() {
                             })}
                         </div>
                     </div>
+                </div>
+            </section>
+
+
+            {/* GUIDELINES */}
+            <section id="guidelines" className="py-16 px-6 relative bg-cover bg-center"
+                style={{ backgroundImage: "url('/bg6.jpeg')" }}
+            >
+                <div className="group max-w-6xl mx-auto text-center">
+
+                    <h2 className="text-3xl font-bold mb-2 pt-6 text-blue-900">
+                        Guidelines
+                    </h2>
+                    <p className="max-w-3xl mx-auto text-blue-900 overflow-hidden opacity-0 transition-all duration-300 max-h-0 group-hover:max-h-20 group-hover:opacity-100 pt-2 pb-6 text-sm">
+                        Open to students, professionals, startups, and innovators across India. Teams must demonstrate innovation, feasibility, and scalability.
+                    </p>
+                    <div className="grid grid-cols-2 gap-6">
+
+                        {/* LEFT COLUMN */}
+                        <div className="space-y-4">
+                            {visibleGuidelines
+                                .filter((_, i) => i % 2 === 0)
+                                .map((item, index) => (
+                                    <div
+                                        key={index}
+                                        className="bg-white/90 backdrop-blur-md p-4 rounded-xl text-sm text-left
+shadow-md transition-all duration-300 ease-in-out
+hover:scale-105 hover:shadow-[0_0_25px_rgba(29,78,216,0.7)]"
+                                    >
+                                        <span className="font-semibold text-blue-700">
+                                            Guideline {index * 2 + 1}:
+                                        </span>{" "}
+                                        {item}
+                                    </div>
+                                ))}
+                        </div>
+
+                        {/* RIGHT COLUMN */}
+                        <div className="space-y-4">
+                            {visibleGuidelines
+                                .filter((_, i) => i % 2 !== 0)
+                                .map((item, index) => (
+                                    <div
+                                        key={index}
+                                        className="bg-white/90 backdrop-blur-md p-4 rounded-xl text-sm text-left
+shadow-md transition-all duration-300 ease-in-out
+hover:scale-105 hover:shadow-[0_0_25px_rgba(29,78,216,0.7)]"
+                                    >
+                                        <span className="font-semibold text-blue-700">
+                                            Guideline {index * 2 + 2}:
+                                        </span>{" "}
+                                        {item}
+                                    </div>
+                                ))}
+                        </div>
+
+                    </div>
+
                 </div>
             </section>
 
