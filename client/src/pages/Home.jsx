@@ -523,13 +523,51 @@ hover:scale-105 hover:shadow-[0_0_25px_rgba(29,78,216,0.7)]"
                 </div>
             </section>
 
-            {/* ELIGIBILITY */}
-            <section id="eligibility" className="py-16 px-6 text-center">
-                <div className="group">
-                    <h2 className="text-3xl font-bold mb-2">Eligibility</h2>
-                    <p className="max-w-3xl mx-auto text-gray-600 overflow-hidden opacity-0 transition-all duration-300 max-h-0 group-hover:max-h-20 group-hover:opacity-100">
+            <section
+                id="eligibility"
+                className="py-20 px-6 relative bg-cover bg-center"
+                style={{ backgroundImage: "url('/bg7.jpeg')" }}
+            >
+                {/* Overlay for readability */}
+
+
+                {/* Content */}
+                <div className="group max-w-6xl mx-auto text-center">
+
+                    <h2 className="text-3xl font-bold mb-2 pt-6 text-green-900">
+                        Eligibility
+                    </h2>
+                    <p className="max-w-3xl mx-auto text-yellow-200 overflow-hidden opacity-0 transition-all duration-300 max-h-0 group-hover:max-h-20 group-hover:opacity-100 pt-2 pb-6 text-sm">
                         Open to students, professionals, startups, and innovators across India. Teams must demonstrate innovation, feasibility, and scalability.
                     </p>
+                    <div className="flex flex-wrap justify-center gap-12">
+
+                        {[
+                            "Open to students across India",
+                            "Professionals and researchers can apply",
+                            "Startups and innovators are encouraged",
+                            "Teams must demonstrate feasibility",
+                            "Focus on innovation and scalability"
+                        ].map((item, index) => (
+                            <div key={index} className="flex flex-col items-center group">
+
+                                {/* Hanging thread */}
+                                <div className="w-[2px] h-12 bg-gray-500"></div>
+
+                                {/* Leaf */}
+                                <div
+                                    className="leaf-shape text-white text-base font-medium px-8 py-5 shadow-lg
+            transform origin-top transition-all duration-500
+            group-hover:animate-leafSwing group-hover:scale-110"
+                                >
+                                    {item}
+                                </div>
+
+                            </div>
+                        ))}
+
+                    </div>
+
                 </div>
             </section>
 
