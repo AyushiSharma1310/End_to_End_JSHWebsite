@@ -432,6 +432,6 @@ def update_dashboard(n_clicks, username):
 
 # Run app
 if __name__ == "__main__":
-    print("🚀 Starting Dash Dashboard on http://localhost:8050")
-    print("📊 Admin Dashboard: http://localhost:8050")
+    print("Starting Dash Dashboard on http://localhost:8050")
+    print("Admin Dashboard: http://localhost:8050")
     app.run_server(debug=True, port=8050)

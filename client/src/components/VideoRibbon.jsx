@@ -5,8 +5,8 @@ const VideoRibbon = () => {
   const videoRef = useRef(null);
 
   return (
-    <div className="w-full flex justify-center items-center">
-      <div className="w-full h-[350px] bg-black rounded-3xl shadow-lg overflow-hidden relative">
+    <div className="flex justify-center items-center px-4 py-4 bg-gradient-to-r from-blue-900 to-blue-500 rounded-2xl shadow-lg overflow-hidden relative ">
+      <div className="bg-black rounded-2xl shadow-lg overflow-hidden relative flex justify-center items-center">
         {/* Video */}
         <video
           ref={videoRef}
@@ -14,7 +14,7 @@ const VideoRibbon = () => {
           loop
           playsInline
           controls
-          className="w-full h-full object-cover"
+          className="object-cover rounded-3xl shadow-lg"
         />
       </div>
     </div>

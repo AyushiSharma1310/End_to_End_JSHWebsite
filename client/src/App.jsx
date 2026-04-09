@@ -5,6 +5,7 @@ import Login from "./pages/Login";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminCreation from "./pages/AdminCreation";
 import ViewSubmittedForm from "./pages/ViewSubmittedForm";
+import Gallery from "./pages/Gallery";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/create-admin" element={<AdminCreation />} />
         <Route path="/view-submission" element={<ViewSubmittedForm />} />
+        <Route path="/gallery" element={<Gallery />} />
       </Routes>
     </div>
   );
