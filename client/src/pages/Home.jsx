@@ -24,19 +24,80 @@ export default function Home() {
     ];
 
     const problemStatements = [
-        "Smart village-level water budgeting with live supply-demand forecasting.",
-        "Low-cost IoT leak detection for rural and urban distribution pipelines.",
-        "AI-based groundwater recharge zone mapping for district planning.",
-        "Real-time water quality anomaly detection for drinking water networks.",
-        "Flood early-warning dashboards integrating rainfall, river, and reservoir data.",
-        "Decision support for reservoir release optimization during extreme weather.",
-        "Wastewater reuse planning for agriculture and peri-urban communities.",
-        "Precision irrigation advisory using weather, soil, and crop-stage intelligence.",
-        "Urban stormwater harvesting and recharge optimization for dense cities.",
-        "Drought vulnerability scoring and intervention prioritization at block level.",
-        "Citizen reporting platform for local water issues with verified escalation.",
-        "Digital twin framework for basin-scale integrated water resource management.",
+        {
+            title: "P01: Development of an application for on-the-spot assessment of Rooftop Rainwater Harvesting potential and system design.",
+            subpoints: [
+                "Development of an application for estimation of rooftop runoff yield and storage requirements. The system shall generate harvesting potential and site-specific design parameters considering rainfall statistics, sub surface details, groundwater table, roof area, and demand."
+            ],
+        },
+        {
+            title: "P02:Development of a small-scale cost-effective and sustainable plastic waste disposal system.",
+            subpoints: [
+                "Development of a decentralized, low-cost system for segregation, volume reduction, and environmentally compliant processing of plastic waste. The solution shall emphasize energy efficiency, minimal secondary emissions, and operational scalability. These systems are useful to minimise soil and water contamination."
+            ],
+        },
+        {
+            title: "P03: Development of a floating sensor-based system for automated recording of river water levels and quality, and its transmission.",
+            subpoints: ["Design of a floating sensor for continuous measurement of river water levels and physicochemical parameters. The system shall enable wireless transmission/telemetry/IoT, and centralized data management."],
+        },
+        {
+            title: "P04: Smart river water level and quality surveillance system with UAVs.",
+            subpoints: [
+                "Development of an unmanned aerial vehicle (UAV) enabled monitoring framework for acquisition of river stage and in-situ water quality parameters through image processing. The system shall integrate onboard sensors, real-time telemetry, and processing modules to derive the river water level and quality parameters."
+            ],
+        },
+        {
+            title: "P05: Development of a decentralized wastewater treatment system for safe disposal and reuse.",
+            subpoints: [
+                "Development of decentralized wastewater treatment system is for safe disposal of grey and black water. The system shall ensure compliance with the Government of India guidelines and standards. These systems reduce significant pollution load on rivers, water bodies and groundwater."
+            ],
+        },
+        {
+            title: "P06: Development of a portable device for the detection of chemical and bacteriological water quality parameters.",
+            subpoints: [
+                "Development of a portable device for the detection of chemical and bacteriological water quality parameters. The system shall enable real-time monitoring and data transmission for informed decision-making."
+            ],
+        },
+        {
+            title: "P07: Development of an early warning system for Glacial Lake Outburst Floods (GLOFs) and urban flooding.",
+            subpoints: [
+                "Development of an integrated early warning system combining remote sensing, hydrodynamic modelling, IoT and real-time data. The system shall enable predictive risk assessment, alerts/warnings, and decision support."
+            ],
+        },
+        {
+            title: "P08: Development of a system for assessing Water Use Efficiency (WUE) for irrigation systems, individual houses, apartments, gated communities, and industries.",
+            subpoints: [
+                "Development of a system for assessment of water use efficiency across irrigation, residential, and industrial sectors. The system shall integrate metering data/releases/supply, usage, and performance indicators to suggest optimized water management."
+            ],
+        },
+        {
+            title: "P09: Development of advanced tools and techniques for the management of water resources and safe drinking water.",
+            subpoints: [
+                "Development of advanced tools/techniques and decision-support systems for water resources management and ensuring safe drinking water. The system shall leverage modelling, IoT, AI and real-time data for generating best management scenarios."
+            ],
+        },
+        {
+            title: "P10: Development of Energy Efficient Sludge Drying and Thickening System.",
+            subpoints: [
+                "Development of an energy-efficient sludge drying and thickening system for wastewater treatment. The system shall ensure optimal performance while minimizing energy consumption and environmental impact."
+            ],
+        },
+        {
+            title: "P11: Development of a Solution for Characterization of Sludge.",
+            subpoints: [
+                "Characterization of sludge is very important for deciding upon its end use. System is to be developed for complete characterization of sludge instantaneously and bringing out different metals present in it, it can help in deciding the final use of sludge. In case complete characterization is difficult, the presence of heavy metal may be brought out by the system."
+            ],
+        },
+        {
+            title: "P12: Development of Process for FCO Compliant Soil Conditioner from Sludge.",
+            subpoints: [
+                "The use of sludge as a soil conditioner to enrich the soil nutrients and help in improving the productivity is an aspirational goal. An efficient cost effective process/technology may be developed for producing FCO compliant sludge."
+            ],
+        },
+        
+
     ];
+
 
     useEffect(() => {
         const loggedIn = localStorage.getItem("isLoggedIn") === "true";
@@ -74,14 +135,14 @@ export default function Home() {
 
             {/* NAVBAR */}
             <nav className="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-8 py-4 bg-white shadow">
-                
+
                 <div className="flex items-left gap-3">
                     <Link to="https://www.jalshakti-dowr.gov.in/" target="_blank" rel="noopener noreferrer">
                         <img src="/logos/logo1.png" alt="logo1" className="h-12" />
                     </Link>
                 </div>
 
-                <div className="flex items-center gap-3 text-gray-700 font-small">
+                <div className="flex items-center gap-3 text-gray-700 font-mediium">
                     <div className="hidden md:flex items-center gap-6">
                         {visibleOptions.map((option) => (
                             <a key={option.id} href={`#${option.id}`} className="hover:text-blue-600">
@@ -91,29 +152,29 @@ export default function Home() {
                     </div>
                     {dropdownOptions.length > 0 && (
                         <div className="relative">
-                        <button
-                            type="button"
-                            className="px-2 text-lg leading-none hover:text-blue-600"
-                            aria-label="More menu options"
-                            onClick={() => setIsMoreMenuOpen((prev) => !prev)}
-                        >
-                            ⋮
-                        </button>
-                        {isMoreMenuOpen && (
-                            <div className="absolute right-0 mt-2 w-44 rounded-lg border bg-white shadow-md py-2 z-50">
-                                {dropdownOptions.map((option) => (
-                                    <a
-                                        key={option.id}
-                                        href={`#${option.id}`}
-                                        className="block px-4 py-2 hover:bg-blue-50 hover:text-blue-600"
-                                        onClick={() => setIsMoreMenuOpen(false)}
-                                    >
-                                        {option.label}
-                                    </a>
-                                ))}
-                            </div>
-                        )}
-                    </div>
+                            <button
+                                type="button"
+                                className="px-2 text-lg leading-none hover:text-blue-600"
+                                aria-label="More menu options"
+                                onClick={() => setIsMoreMenuOpen((prev) => !prev)}
+                            >
+                                ⋮
+                            </button>
+                            {isMoreMenuOpen && (
+                                <div className="absolute right-0 mt-2 w-44 rounded-lg border bg-white shadow-md py-2 z-50">
+                                    {dropdownOptions.map((option) => (
+                                        <a
+                                            key={option.id}
+                                            href={`#${option.id}`}
+                                            className="block px-4 py-2 hover:bg-blue-50 hover:text-blue-600"
+                                            onClick={() => setIsMoreMenuOpen(false)}
+                                        >
+                                            {option.label}
+                                        </a>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
                     )}
                 </div>
 
@@ -168,7 +229,7 @@ export default function Home() {
             </nav>
 
             {/* HERO */}
-            <section 
+            <section
                 id="about"
                 className="pt-24 pb-4 px-8 bg-cover bg-center"
                 style={{ backgroundImage: "url('../public/bg1.png')" }}
@@ -181,7 +242,7 @@ export default function Home() {
                         </h2>
 
                         <p className="text-base font-bold text-gray-800 leading-relaxed"
->
+                        >
                             Bharat WIN is a national initiative of the Department of Water Resources, River Development and Ganga Rejuvenation, Ministry of Jal Shakti, Government of India , aimed at driving meaningful and technology-led transformation in India's water sector. The mission is to accelerate innovation by connecting scientific research, entrepreneurship, and grassroots initiatives to ensure accessibility, affordability, and sustainability. The initiative strengthens the research and innovation ecosystem by providing both institutional and financial support, encouraging development of technologies that can be tested, scaled, and deployed in real-world settings to solve critical water challenges. <br /><br />To nurture innovation, DoWR, RD & GR, MoJS, will organize Jal Shakti Hackathons under Bharat WIN Initiative and invite calls for proposals that inspire creative solutions in priority areas such as water resource management, wastewater treatment, water-use efficiency, climate resilience, flood management, smart monitoring systems, precision agriculture, and urban hydrology. The National Institute of Hydrology (NIH), Roorkee, has been designated as Project Implementation Agency (PIA) for this initiative. The Hackathon winners will be awarded Rs 1 lakh for developing Proof-of-Concept (PoC). The selected proposals will be evaluated further for grant-in-aid.
                         </p>
 
@@ -207,18 +268,23 @@ export default function Home() {
                 <ImageRibbon />
             </section>
             {/* Hackathon Highlights */}
-            <section 
+            <section
                 id="focus"
                 className="py-16 px-6 bg-cover bg-center"
                 style={{ backgroundImage: "url('../public/bg3.jpg')" }}
             >
-                <h2 className="text-3xl font-bold text-center mb-12 text-blue-900">
-                    Hackathon Highlights
-                </h2>
+                <div className="group mb-12 text-center">
+                    <h2 className="text-3xl font-bold text-blue-900">
+                        Hackathon Highlights
+                    </h2>
+                    <p className="mx-auto mt-2 max-w-3xl overflow-hidden text-sm leading-relaxed text-blue-900/80 opacity-0 transition-all duration-300 max-h-0 group-hover:max-h-24 group-hover:opacity-100">
+                        Key benefits for participants including rewards, grant support, and national-level visibility for impactful water innovation.
+                    </p>
+                </div>
 
                 <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
 
-                    <div className="bg-white/90 rounded-2xl shadow p-6 text-center">
+                    <div className="bg-white/90 rounded-2xl shadow p-6 text-center transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(59,130,246,0.45)]">
                         <Droplet className="mx-auto mb-4 text-blue-500" size={40} />
                         <h4 className="font-semibold text-lg">Rs. 1  Lakh Reward</h4>
                         <p className="text-sm text-gray-600 mt-2">
@@ -226,7 +292,7 @@ export default function Home() {
                         </p>
                     </div>
 
-                    <div className="bg-white/90 rounded-2xl shadow p-6 text-center">
+                    <div className="bg-white/90 rounded-2xl shadow p-6 text-center transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(59,130,246,0.45)]">
                         <Users className="mx-auto mb-4 text-blue-500" size={40} />
                         <h4 className="font-semibold text-lg">Grant-in-aid</h4>
                         <p className="text-sm text-gray-600 mt-2">
@@ -234,7 +300,7 @@ export default function Home() {
                         </p>
                     </div>
 
-                    <div className="bg-white/90 rounded-2xl shadow p-6 text-center">
+                    <div className="bg-white/90 rounded-2xl shadow p-6 text-center transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(59,130,246,0.45)]">
                         <Trophy className="mx-auto mb-4 text-blue-500" size={40} />
                         <h4 className="font-semibold text-lg">Gain Recognition and Exposure</h4>
                         <p className="text-sm text-gray-600 mt-2">
@@ -245,57 +311,62 @@ export default function Home() {
                 </div>
             </section>
             {/* FOCUS AREAS */}
-            <section 
+            <section
                 id="focus"
                 className="py-16 px-6 bg-cover bg-center"
                 style={{ backgroundImage: "url('../public/bg2.jpg')" }}
             >
-                <h2 className="text-3xl font-bold text-center mb-12 text-white">
-                    Focus Areas
-                </h2>
+                <div className="group mb-12 text-center">
+                    <h2 className="text-3xl font-bold text-white">
+                        Focus Areas
+                    </h2>
+                    <p className="mx-auto mt-2 max-w-3xl overflow-hidden text-sm leading-relaxed text-white/90 opacity-0 transition-all duration-300 max-h-0 group-hover:max-h-24 group-hover:opacity-100">
+                        Priority domains where teams can frame high-impact solutions in assessment, efficiency, resilience, monitoring, and water quality.
+                    </p>
+                </div>
 
                 <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
 
-                    <div className="bg-white/90 rounded-2xl shadow p-6 text-center">
+                    <div className="bg-white/90 rounded-2xl shadow p-6 text-center transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(59,130,246,0.45)]">
                         <CircleCheckBig className="mx-auto mb-4 text-blue-500" size={40} />
                         <h4 className="font-semibold text-lg">Water Resources Assessment and Management</h4>
                     </div>
 
-                    <div className="bg-white/90 rounded-2xl shadow p-6 text-center">
+                    <div className="bg-white/90 rounded-2xl shadow p-6 text-center transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(59,130,246,0.45)]">
                         <Recycle className="mx-auto mb-4 text-blue-500" size={40} />
                         <h4 className="font-semibold text-lg">Waste-water Management</h4>
                     </div>
 
-                    <div className="bg-white/90 rounded-2xl shadow p-6 text-center">
+                    <div className="bg-white/90 rounded-2xl shadow p-6 text-center transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(59,130,246,0.45)]">
                         <CloudRain className="mx-auto mb-4 text-blue-500" size={40} />
                         <h4 className="font-semibold text-lg">Climate Resilience and Adaptation</h4>
-                    </div>    
-                    
-                    <div className="bg-white/90 rounded-2xl shadow p-6 text-center">
+                    </div>
+
+                    <div className="bg-white/90 rounded-2xl shadow p-6 text-center transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(59,130,246,0.45)]">
                         <Leaf className="mx-auto mb-4 text-blue-500" size={40} />
                         <h4 className="font-semibold text-lg">Water Use Efficiency and Circular Economy</h4>
-                    </div>    
-                    <div className="bg-white/90 rounded-2xl shadow p-6 text-center">
+                    </div>
+                    <div className="bg-white/90 rounded-2xl shadow p-6 text-center transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(59,130,246,0.45)]">
                         <Cpu className="mx-auto mb-4 text-blue-500" size={40} />
                         <h4 className="font-semibold text-lg">Smart Water Grids, Internet of Things, and data-driven water (surface and ground) management approaches</h4>
-                    </div>    
-                    <div className="bg-white/90 rounded-2xl shadow p-6 text-center">
+                    </div>
+                    <div className="bg-white/90 rounded-2xl shadow p-6 text-center transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(59,130,246,0.45)]">
                         <Mountain className="mx-auto mb-4 text-blue-500" size={40} />
                         <h4 className="font-semibold text-lg">Efficient Irrigation, Precision Agriculture and Rainwater Harvesting</h4>
-                    </div>    
-                    <div className="bg-white/90 rounded-2xl shadow p-6 text-center">
+                    </div>
+                    <div className="bg-white/90 rounded-2xl shadow p-6 text-center transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(59,130,246,0.45)]">
                         <Waves className="mx-auto mb-4 text-blue-500" size={40} />
                         <h4 className="font-semibold text-lg">River Basin & Flood Management, Glacial Lake Outburst Floods</h4>
-                    </div>    
-                    <div className="bg-white/90 rounded-2xl shadow p-6 text-center">
+                    </div>
+                    <div className="bg-white/90 rounded-2xl shadow p-6 text-center transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(59,130,246,0.45)]">
                         <Building className="mx-auto mb-4 text-blue-500" size={40} />
                         <h4 className="font-semibold text-lg">Hydrological modelling inclusive of Urban Hydrology</h4>
-                    </div>    
-                    <div className="bg-white/90 rounded-2xl shadow p-6 text-center">
+                    </div>
+                    <div className="bg-white/90 rounded-2xl shadow p-6 text-center transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(59,130,246,0.45)]">
                         <GlassWater className="mx-auto mb-4 text-blue-500" size={40} />
                         <h4 className="font-semibold text-lg"> Quality of Water and related issues</h4>
-                    </div>    
-                    
+                    </div>
+
                 </div>
             </section>
 
@@ -303,33 +374,56 @@ export default function Home() {
             <section id="problems"
                 className="pt-24 pb-4 px-8 bg-cover bg-center"
                 style={{ backgroundImage: "url('../public/bg4.png')" }}>
-                <div className="w-full max-w-7xl mx-auto">
-                    <h2 className="text-3xl font-bold mb-3 text-center bg-amber-100 p-4 rounded-full">
-                        Problem Statements
-                    </h2>
-                    <p className="text-gray-600 text-center mb-10 max-w-2xl mx-auto text-sm leading-relaxed bg-amber-50 p-4 rounded-lg shadow-sm">
-                        12 challenge logs for participants to pick from.
-                    </p>
-                    
+                <div className="w-full max-w-9xl mx-auto">
+                    <div className="group mb-10 text-center">
+                        <h2 className="text-3xl font-bold bg-amber-100 p-4 rounded-full bg-white/90 shadow-lg text-amber-900">
+                            Problem Statements
+                        </h2>
+                        <p className="mt-3 text-gray-700 text-center max-w-3xl mx-auto text-sm leading-relaxed bg-amber-50 p-4 rounded-lg shadow-sm overflow-hidden opacity-0 transition-all duration-300 max-h-0 group-hover:max-h-40 group-hover:opacity-100">
+                            Applicants may formulate their problem statements by identifying water-related issues, preferably aligned with the given Focus Areas. A few identified problem statements are provided below, which may also be used as a basis for developing new ideas.
+                        </p>
+                    </div>
+
                     <div className="w-full rounded-2xl border border-amber-200 bg-amber-50 p-4 sm:p-6 shadow-sm">
                         <div className="space-y-3">
-                            {problemStatements.map((statement, index) => (
-                                <div
-                                    key={index}
-                                    className={`flex gap-4 rounded-full border border-amber-900/30 px-5 py-4 shadow-md ${
-                                        index % 2 === 0 ? "rotate-[0.4deg]" : "-rotate-[0.4deg]"
-                                    }`}
-                                    style={{
-                                        background:
-                                            "linear-gradient(180deg, #B8793D 0%, #A66A35 50%, #8D582C 100%)",
-                                    }}
-                                >
-                                    <span className="min-w-[84px] text-sm font-bold text-amber-100">
-                                        Prob {String(index + 1).padStart(2, "0")}
-                                    </span>
-                                    <p className="text-sm text-amber-50">{statement}</p>
-                                </div>
-                            ))}
+                            {problemStatements.map((statement, index) => {
+                                const title =
+                                    typeof statement === "string" ? statement : statement.title;
+                                const description =
+                                    typeof statement === "string"
+                                        ? ""
+                                        : statement.paragraph || statement.subpoints?.join(" ");
+
+                                return (
+                                    <div
+                                        key={index}
+                                        className={`group rounded-2xl border border-amber-900/30 px-5 py-4 shadow-md ${index % 2 === 0 ? "rotate-[0.4deg]" : "-rotate-[0.4deg]"
+                                            }`}
+                                        style={{
+                                            background:
+                                                "linear-gradient(180deg, #B8793D 0%, #A66A35 50%, #8D582C 100%)",
+                                        }}
+                                    >
+                                        <div className="flex items-start gap-4">
+                                            <span className="min-w-[84px] pt-0.5 text-sm font-bold text-amber-100">
+                                                Prob {String(index + 1).padStart(2, "0")}
+                                            </span>
+                                            <p className="text-sm font-semibold leading-relaxed text-amber-50">
+                                                {title}
+                                            </p>
+                                            <span className="ml-auto text-amber-100 transition-transform duration-200 group-hover:rotate-180">
+                                                ▾
+                                            </span>
+                                        </div>
+
+                                        {description && (
+                                            <p className="max-h-0 overflow-hidden pl-[100px] text-xs leading-relaxed text-amber-100 opacity-0 transition-all duration-300 group-hover:mt-3 group-hover:max-h-40 group-hover:opacity-100">
+                                                {description}
+                                            </p>
+                                        )}
+                                    </div>
+                                );
+                            })}
                         </div>
                     </div>
                 </div>
@@ -337,33 +431,43 @@ export default function Home() {
 
             {/* ELIGIBILITY */}
             <section id="eligibility" className="py-16 px-6 text-center">
-                <h2 className="text-3xl font-bold mb-6">Eligibility</h2>
-                <p className="max-w-3xl mx-auto text-gray-600">
-                    Open to students, professionals, startups, and innovators across India.
-                    Teams must demonstrate innovation, feasibility, and scalability.
-                </p>
+                <div className="group">
+                    <h2 className="text-3xl font-bold mb-2">Eligibility</h2>
+                    <p className="max-w-3xl mx-auto text-gray-600 overflow-hidden opacity-0 transition-all duration-300 max-h-0 group-hover:max-h-20 group-hover:opacity-100">
+                        Open to students, professionals, startups, and innovators across India. Teams must demonstrate innovation, feasibility, and scalability.
+                    </p>
+                </div>
             </section>
 
             {/* TIMELINE */}
             <section id="timeline">
+                <div className="group px-6 pt-8 text-center">
+                    <h2 className="text-3xl font-bold mb-2">Timeline</h2>
+                    <p className="mx-auto max-w-3xl text-gray-600 overflow-hidden opacity-0 transition-all duration-300 max-h-0 group-hover:max-h-20 group-hover:opacity-100">
+                        Track the end-to-end schedule from registrations to evaluation and final outcomes.
+                    </p>
+                </div>
                 <Timeline />
             </section>
 
             {/* CONTACT */}
             <section id="contact" className="py-16 px-6 text-center bg-blue-50">
-                <h2 className="text-3xl font-bold mb-6">Contact</h2>
-                <p className="text-gray-600">
-                    Reach out to the organizing team for any queries or support regarding the hackathon.
-                </p>
+                <div className="group">
+                    <h2 className="text-3xl font-bold mb-2">Contact</h2>
+                    <p className="text-gray-600 overflow-hidden opacity-0 transition-all duration-300 max-h-0 group-hover:max-h-20 group-hover:opacity-100">
+                        Reach out to the organizing team for any queries or support regarding the hackathon.
+                    </p>
+                </div>
             </section>
 
             {/* PRIVACY */}
             <section id="privacy" className="py-16 px-6 text-center">
-                <h2 className="text-3xl font-bold mb-6">Privacy Policy</h2>
-                <p className="text-gray-600">
-                    Participant data will be handled securely and used strictly for hackathon purposes
-                    in compliance with government data policies.
-                </p>
+                <div className="group">
+                    <h2 className="text-3xl font-bold mb-2">Privacy Policy</h2>
+                    <p className="text-gray-600 overflow-hidden opacity-0 transition-all duration-300 max-h-0 group-hover:max-h-20 group-hover:opacity-100">
+                        Participant data will be handled securely and used strictly for hackathon purposes in compliance with government data policies.
+                    </p>
+                </div>
             </section>
 
             {/* FOOTER */}
