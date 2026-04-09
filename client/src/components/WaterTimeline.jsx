@@ -17,11 +17,10 @@ const WaterTimeline = () => {
   const waterLevel = ((activeIndex + 1) / timelineData.length) * 100;
 
   return (
-    <div className="py-16 px-6 bg-blue-50 ">
-      <h2 className="text-3xl font-bold text-center mb-12 animate-fadeUp">
-        Event Timeline
-      </h2>
-
+    <div className="group px-6 pt-8 text-center "
+    style={{ backgroundImage: "url('/bg8.jpeg')", backgroundSize: 'cover', backgroundPosition: 'center' }}
+>
+     
       <div className="flex flex-col md:flex-row items-center justify-center gap-28">
 
         {/* LEFT: Visual */}

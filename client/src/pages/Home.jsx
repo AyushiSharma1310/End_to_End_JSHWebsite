@@ -583,7 +583,7 @@ hover:scale-105 hover:shadow-[0_0_25px_rgba(29,78,216,0.7)]"
             </section>
 
             {/* CONTACT */}
-            <section id="contact" className="py-16 px-6 text-center bg-blue-50">
+            <section id="contact" className="py-16 px-6 pt-12 text-center bg-blue-50">
                 <div className="group">
                     <h2 className="text-3xl font-bold mb-2">Contact</h2>
                     <p className="text-gray-600 overflow-hidden opacity-0 transition-all duration-300 max-h-0 group-hover:max-h-20 group-hover:opacity-100">
