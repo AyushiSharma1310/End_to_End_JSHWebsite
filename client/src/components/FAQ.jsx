@@ -30,7 +30,7 @@ const faqs = [
     question: "How will submissions be evaluated?",
     answer:
       "Submissions will be judged based on innovation, feasibility, scalability, and impact. These parameters are mentioned in the evaluation criteria section of the website. Make sure to go through it before submitting your proposal."
-  }
+  },
   {
     question: "What is PoC-",
     answer:
