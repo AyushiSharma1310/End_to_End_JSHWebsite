@@ -6,6 +6,7 @@ import Timeline from "../components/WaterTimeline";
 import VideoRibbon from "../components/VideoRibbon";
 import { useState, useEffect } from "react";
 import ChatBot from "../components/Chatbot";
+import FAQ from "../components/FAQ";
 
 
 export default function Home() {
@@ -635,6 +636,19 @@ hover:scale-105 hover:shadow-[0_0_25px_rgba(29,78,216,0.7)]"
                     </p>
                 </div>
             </section>
+            <section>
+                <div className="group px-6 pt-8 pb-16 text-center">
+                    <h2 className="text-3xl font-bold mb-2">Frequently Asked Questions</h2>
+                    <p className="text-gray-600 overflow-hidden opacity-0 transition-all duration-300 max-h-0 group-hover:max-h-20 group-hover:opacity-100">
+                        Reach out to the organizing team for any queries or support regarding the hackathon.
+                    </p>
+                    <div className="group-hover:mt-6 mt-4 text-blue-700 font-semibold transition-all duration-300">
+                     <FAQ />
+                    </div>
+                </div>
+            </section>
+
+
             {/* FOOTER */}
             <footer className="text-center py-6 text-gray-500 text-sm">
                 <div>© 2026 Jal Shakti Hackathon 2.0 | Ministry of Jal Shakti, Government of India</div>

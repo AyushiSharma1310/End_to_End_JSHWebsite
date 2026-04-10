@@ -6,6 +6,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import AdminCreation from "./pages/AdminCreation";
 import ViewSubmittedForm from "./pages/ViewSubmittedForm";
 import Gallery from "./pages/Gallery";
+import FAQ from "./components/FAQ";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 function App() {
   return (
@@ -19,6 +20,8 @@ function App() {
         <Route path="/view-submission" element={<ViewSubmittedForm />} />
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/privacy" element={<PrivacyPolicy />} />
+        {/* route for FAQ */}
+        <Route path="/faq" element={<FAQ />} />
       </Routes>
       
     </div>
