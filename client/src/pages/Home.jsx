@@ -5,6 +5,8 @@ import TextRibbon from "../components/TextRibbon";
 import Timeline from "../components/WaterTimeline";
 import VideoRibbon from "../components/VideoRibbon";
 import { useState, useEffect } from "react";
+import ChatBot from "../components/Chatbot";
+
 
 export default function Home() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -167,6 +169,7 @@ export default function Home() {
         return () => clearInterval(interval);
     }, []);
     return (
+
         <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white text-gray-800">
 
             {/* NAVBAR */}
@@ -294,6 +297,10 @@ export default function Home() {
                         <div className="w-full h-full bg-gradient-to-r from-blue-900 to-blue-500 rounded-2xl shadow-lg overflow-hidden relative flex justify-center items-center">
                             <VideoRibbon />
                         </div>
+                    </div>
+                    <div>
+                       {/* ChatBot */}
+                        <ChatBot /> 
                     </div>
                 </div>
             </section>
@@ -574,7 +581,7 @@ hover:scale-105 hover:shadow-[0_0_25px_rgba(29,78,216,0.7)]"
             {/* TIMELINE */}
             <section id="timeline">
                 <div className="group px-6 pt-8 pb-16 text-center"
-                style={{ backgroundImage: "url('/bg9.gif')", backgroundSize: 'cover', backgroundPosition: 'center' }}>
+                    style={{ backgroundImage: "url('/bg9.gif')", backgroundSize: 'cover', backgroundPosition: 'center' }}>
                     <h2 className="text-3xl text-blue-900 font-bold mb-2">Timeline</h2>
                     <p className="mx-auto max-w-4xl text-blue-900 font-bold overflow-hidden opacity-0 transition-all duration-300 max-h-0 group-hover:max-h-20 group-hover:opacity-100">
                         Track the end-to-end schedule from registrations to evaluation and final outcomes.
@@ -621,7 +628,7 @@ hover:scale-105 hover:shadow-[0_0_25px_rgba(29,78,216,0.7)]"
                             <CircleAlert className="mx-auto text-blue-500" size={28} />
                             Privacy Policy
                         </h1>
-                        
+
                     </Link>
                     <p className="text-gray-600 overflow-hidden opacity-0 transition-all duration-300 max-h-0 group-hover:max-h-20 group-hover:opacity-100">
                         Read our privacy policy regarding the hackathon.

@@ -20,6 +20,7 @@ function App() {
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/privacy" element={<PrivacyPolicy />} />
       </Routes>
+      
     </div>
   );
 }
