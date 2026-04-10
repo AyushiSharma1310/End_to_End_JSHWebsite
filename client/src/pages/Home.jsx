@@ -299,8 +299,8 @@ export default function Home() {
                         </div>
                     </div>
                     <div>
-                       {/* ChatBot */}
-                        <ChatBot /> 
+                        {/* ChatBot */}
+                        <ChatBot />
                     </div>
                 </div>
             </section>
@@ -545,16 +545,16 @@ hover:scale-105 hover:shadow-[0_0_25px_rgba(29,78,216,0.7)]"
                         Eligibility
                     </h2>
                     <p className="max-w-3xl mx-auto text-yellow-200 overflow-hidden opacity-0 transition-all duration-300 max-h-0 group-hover:max-h-20 group-hover:opacity-100 pt-2 pb-6 text-sm">
-                        Open to students, professionals, startups, and innovators across India. Teams must demonstrate innovation, feasibility, and scalability.
+                        The following Indian Organizations/ Institutions/private sector are eligible to submit proposals.
                     </p>
                     <div className="flex flex-wrap justify-center gap-12">
 
                         {[
-                            "Open to students across India",
-                            "Professionals and researchers can apply",
-                            "Startups and innovators are encouraged",
-                            "Teams must demonstrate feasibility",
-                            "Focus on innovation and scalability"
+                            <span><b>Category 1:</b> Startups, MSMEs, Industries and Incubators</span>,
+                            <span><b>Category 2:</b> Laboratories, R&D institutions and registered societies.</span>,
+                            <span><b>Category 3:</b> Academia, universities & colleges.</span>,
+                            <span><b>Category 4:</b> Indian NGOs registered under relevant Society Act, non-profit-making recognized Indian Private R&D Institutions/ Organizations.</span>,
+                            <span><b>Category 5:</b> Any other entities that are not covered under the above categories, including individuals.</span>
                         ].map((item, index) => (
                             <div key={index} className="flex flex-col items-center group">
 

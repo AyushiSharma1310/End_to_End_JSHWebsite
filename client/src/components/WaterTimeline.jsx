@@ -2,13 +2,13 @@ import { useState } from "react";
 import kidImg from "../assets/kid.png";
 
 const timelineData = [
-  { date: "09 December 2025", title: "Registrations Open" },
-  { date: "26 January 2026", title: "Registrations Close" },
-  { date: "27 March 2026", title: "Hackathon Begins" },
-  { date: "09-10 March 2026", title: "Proposal Presentation" },
-  { date: "01 March 2026", title: "Results Announced" },
-  { date: "15 March 2026", title: "Award Ceremony" },
-  { date: "30 March 2026", title: "PoC Submission" },
+  { date: "1 May 2026", title: "Registrations Open" },
+  { date: "30 June 2026", title: "Registrations Close" },
+  { date: "1 July 2026", title: "Hackathon Begins" },
+  { date: "09-10 July 2026", title: "Proposal Presentation" },
+  { date: "01 August 2026", title: "Results Announced" },
+  { date: "15 August 2026", title: "Award Ceremony" },
+  { date: "31 August 2026", title: "PoC Submission" },
 ];
 
 const WaterTimeline = () => {

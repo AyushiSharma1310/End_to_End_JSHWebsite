@@ -11,7 +11,7 @@ export default function AdminDashboard() {
   const [error, setError] = useState("");
   const [activeTab, setActiveTab] = useState("overview");
   const [userRole, setUserRole] = useState("");
-  const dashboardUrl = "http://localhost:8050";
+  const dashboardUrl = "http://localhost:8050/dashboard";
 
   useEffect(() => {
     // Check if user is admin or owner
