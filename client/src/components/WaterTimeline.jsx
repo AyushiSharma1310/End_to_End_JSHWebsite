@@ -17,7 +17,7 @@ const WaterTimeline = () => {
   const waterLevel = ((activeIndex + 1) / timelineData.length) * 100;
 
   return (
-    <div className="group px-6 pt-8 text-center "
+    <div className="group px-6 pt-8 pb-8 text-center "
     style={{ backgroundImage: "url('/bg8.jpeg')", backgroundSize: 'cover', backgroundPosition: 'center' }}
 >
      

@@ -1,4 +1,4 @@
-import { Droplet, Users, GlassWater, CircleCheckBig, ChevronLeft, ChevronRight, Trophy, Waves, Recycle, CloudRain, Leaf, Cpu, Sprout, Mountain, Building } from "lucide-react";
+import { Mail, Droplet, Users, GlassWater, CircleAlert, CircleCheckBig, ChevronLeft, ChevronRight, Trophy, Waves, Recycle, CloudRain, Leaf, Cpu, Sprout, Mountain, Building } from "lucide-react";
 import ImageRibbon from "../components/ImageRibbon";
 import { Link } from "react-router-dom";
 import TextRibbon from "../components/TextRibbon";
@@ -268,7 +268,7 @@ export default function Home() {
             <section
                 id="about"
                 className="pt-24 pb-4 px-8 bg-cover bg-center"
-                style={{ backgroundImage: "url('../public/bg1.png')" }}
+                style={{ backgroundImage: "url('../public/bg11.jpg')" }}
             >
                 <div className="max-w-1xl mx-auto grid md:grid-cols-2 gap-1 items-center justify-center ">
 
@@ -420,7 +420,7 @@ export default function Home() {
                         </p>
                     </div>
 
-                    <div className="w-full rounded-2xl border border-amber-200 bg-amber-50 p-4 sm:p-6 shadow-sm">
+                    <div className="w-full rounded-2xl border text-green-800 border-amber-200 bg-amber-50 p-4 sm:p-6 shadow-sm">
                         <div className="space-y-3">
                             {problemStatements.map((statement, index) => {
                                 const title =
@@ -437,7 +437,7 @@ export default function Home() {
                                             }`}
                                         style={{
                                             background:
-                                                "linear-gradient(180deg, #B8793D 0%, #A66A35 50%, #8D582C 100%)",
+                                                "linear-gradient(180deg, #366d5d 0%, #094e32 50%, #89eef0 100%)",
                                         }}
                                     >
                                         <div className="flex items-start gap-4">
@@ -573,9 +573,10 @@ hover:scale-105 hover:shadow-[0_0_25px_rgba(29,78,216,0.7)]"
 
             {/* TIMELINE */}
             <section id="timeline">
-                <div className="group px-6 pt-8 text-center">
-                    <h2 className="text-3xl font-bold mb-2">Timeline</h2>
-                    <p className="mx-auto max-w-3xl text-gray-600 overflow-hidden opacity-0 transition-all duration-300 max-h-0 group-hover:max-h-20 group-hover:opacity-100">
+                <div className="group px-6 pt-8 pb-16 text-center"
+                style={{ backgroundImage: "url('/bg9.gif')", backgroundSize: 'cover', backgroundPosition: 'center' }}>
+                    <h2 className="text-3xl text-blue-900 font-bold mb-2">Timeline</h2>
+                    <p className="mx-auto max-w-4xl text-blue-900 font-bold overflow-hidden opacity-0 transition-all duration-300 max-h-0 group-hover:max-h-20 group-hover:opacity-100">
                         Track the end-to-end schedule from registrations to evaluation and final outcomes.
                     </p>
                 </div>
@@ -589,19 +590,44 @@ hover:scale-105 hover:shadow-[0_0_25px_rgba(29,78,216,0.7)]"
                     <p className="text-gray-600 overflow-hidden opacity-0 transition-all duration-300 max-h-0 group-hover:max-h-20 group-hover:opacity-100">
                         Reach out to the organizing team for any queries or support regarding the hackathon.
                     </p>
+                    <div className="group-hover:mt-6 mt-4 text-blue-700 font-semibold transition-all duration-300">
+                        <div className="text-2xl">Jal Shakti Hackathon Secretariat</div>
+
+                        <br />
+                        <a href="https://www.google.com/maps/place/National+Institute+of+Hydrology/@29.8677646,77.8955828,17.38z/data=!4m6!3m5!1s0x390eb364cbcf1b63:0xd5f911e29e569415!8m2!3d29.8685074!4d77.8942169!16s%2Fm%2F0h7nblq?entry=ttu&g_ep=EgoyMDI2MDQwNy4wIKXMDSoASAFQAw%3D%3D/" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline transition-colors duration-200">
+                            Jal Vigyan Bhawan, Roorkee, District Haridwar, Uttarakhand - 247667, India.
+                        </a>
+                        <br />
+                        <a
+                            href="tel:+919876543210"
+                            className="text-blue-600 hover:underline transition-colors duration-200"
+                        >
+                            Phone: +91-1332-249410
+                        </a>
+                        <br />
+                        Fax: +91-1332-272123
+                        <br />
+                        <a href="mailto:hackathon.nihr@gov.in" className="text-blue-600 hover:underline">
+                            Email: hackathon.nihr@gov.in
+                        </a>
+                    </div>
                 </div>
             </section>
 
-            {/* PRIVACY */}
-            <section id="privacy" className="py-16 px-6 text-center">
+            <section id="contact" className="py-16 px-6 pt-12 text-center bg-blue-50">
                 <div className="group">
-                    <h2 className="text-3xl font-bold mb-2">Privacy Policy</h2>
+                    <Link to="/privacy" className="group-hover:text-blue-600 group-hover:underline text-lg justify-center flex mt-4 text-gray-600 transition-colors duration-200">
+                        <h1 className="flex items-center justify-center gap-3 text-4xl font-extrabold text-blue-900 mb-8">
+                            <CircleAlert className="mx-auto text-blue-500" size={28} />
+                            Privacy Policy
+                        </h1>
+                        
+                    </Link>
                     <p className="text-gray-600 overflow-hidden opacity-0 transition-all duration-300 max-h-0 group-hover:max-h-20 group-hover:opacity-100">
-                        Participant data will be handled securely and used strictly for hackathon purposes in compliance with government data policies.
+                        Read our privacy policy regarding the hackathon.
                     </p>
                 </div>
             </section>
-
             {/* FOOTER */}
             <footer className="text-center py-6 text-gray-500 text-sm">
                 <div>© 2026 Jal Shakti Hackathon 2.0 | Ministry of Jal Shakti, Government of India</div>

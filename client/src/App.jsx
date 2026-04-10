@@ -6,7 +6,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import AdminCreation from "./pages/AdminCreation";
 import ViewSubmittedForm from "./pages/ViewSubmittedForm";
 import Gallery from "./pages/Gallery";
-
+import PrivacyPolicy from "./pages/PrivacyPolicy";
 function App() {
   return (
     <div>
@@ -18,6 +18,7 @@ function App() {
         <Route path="/create-admin" element={<AdminCreation />} />
         <Route path="/view-submission" element={<ViewSubmittedForm />} />
         <Route path="/gallery" element={<Gallery />} />
+        <Route path="/privacy" element={<PrivacyPolicy />} />
       </Routes>
     </div>
   );
