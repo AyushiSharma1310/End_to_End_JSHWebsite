@@ -417,7 +417,7 @@ export default function Home() {
             {/* PROBLEM STATEMENTS */}
             <section id="problems"
                 className="pt-24 pb-4 px-8 bg-cover bg-center"
-                style={{ backgroundImage: "url('../public/bg4.png')" }}>
+                style={{ backgroundImage: "url('../public/bg4.gif')" }}>
                 <div className="w-full max-w-9xl mx-auto">
                     <div className="group mb-10 text-center">
                         <h2 className="text-3xl font-bold mb-2 pt-6 text-white">
