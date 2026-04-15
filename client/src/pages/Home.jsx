@@ -476,7 +476,7 @@ export default function Home() {
 
             {/* GUIDELINES */}
             <section id="guidelines" className="py-16 px-6 relative bg-cover bg-center"
-                style={{ backgroundImage: "url('/bg6.jpeg')" }}
+                style={{ backgroundImage: "url('/bg6.png')" }}
             >
                 <div className="group max-w-6xl mx-auto text-center">
 
@@ -534,7 +534,7 @@ hover:scale-105 hover:shadow-[0_0_25px_rgba(29,78,216,0.7)]"
             <section
                 id="eligibility"
                 className="py-20 px-6 relative bg-cover bg-center"
-                style={{ backgroundImage: "url('/bg7.jpeg')" }}
+                style={{ backgroundImage: "url('/bg7.jpg')" }}
             >
                 {/* Overlay for readability */}
 
@@ -581,7 +581,7 @@ hover:scale-105 hover:shadow-[0_0_25px_rgba(29,78,216,0.7)]"
 
             {/* TIMELINE */}
             <section id="timeline">
-                <div className="group px-6 pt-8 pb-16 text-center"
+                <div className="group px-6 pt-16 pb-16 text-center"
                     style={{ backgroundImage: "url('/bg9.gif')", backgroundSize: 'cover', backgroundPosition: 'center' }}>
                     <h2 className="text-3xl text-blue-900 font-bold mb-2">Timeline</h2>
                     <p className="mx-auto max-w-4xl text-blue-900 font-bold overflow-hidden opacity-0 transition-all duration-300 max-h-0 group-hover:max-h-20 group-hover:opacity-100">
