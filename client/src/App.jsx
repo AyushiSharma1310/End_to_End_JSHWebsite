@@ -8,6 +8,7 @@ import ViewSubmittedForm from "./pages/ViewSubmittedForm";
 import Gallery from "./pages/Gallery";
 import FAQ from "./components/FAQ";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
+
 function App() {
   return (
     <div>

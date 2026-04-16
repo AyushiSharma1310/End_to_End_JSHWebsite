@@ -129,10 +129,15 @@ def fetch_dashboard_data():
     """Fetch dashboard data from backend"""
     try:
         if not ADMIN_USERNAME:
+            print("❌ ADMIN_USERNAME missing")
             return None
         response = requests.get(f"{BACKEND_URL}/admin/dashboard?username={ADMIN_USERNAME}")
+        print("STATUS:", response.status_code)
+        print("DATA:", response.text)
+
         if response.status_code == 200:
             data = response.json()
+            print("API Response",data)
             if data.get("success"):
                 return data.get("data")
     except Exception as e:
@@ -173,6 +178,28 @@ def create_registration_bar_chart(registration_stats):
         return go.Figure()
     
     df = pd.DataFrame(registration_stats)
+
+    # ✅ Debug
+    print("RAW DATA:", registration_stats)
+    print("DF HEAD:\n", df.head())
+    print("COLUMNS:", df.columns)
+
+    # ✅ Safety checks
+    if df.empty:
+        print("⚠️ Empty DataFrame")
+        return go.Figure()
+
+    # ✅ Fix column naming issues
+    if "registrationStep" in df.columns:
+        df.rename(columns={"registrationStep": "registration_step"}, inplace=True)
+
+    # ✅ CRITICAL FIX (TYPE ISSUE)
+    df["registration_step"] = df["registration_step"].astype(str)
+
+    # ✅ Ensure count exists
+    if "count" not in df.columns:
+        print("❌ 'count' column missing")
+        return go.Figure()
     step_labels = {
         "1": "Step 1", "2": "Step 2", "3": "Step 3",
         "4": "Step 4", "completed": "Completed"
@@ -291,9 +318,21 @@ def create_heatmap(registration_stats):
     # Create a simple heatmap showing progression
     heatmap_data = df[["registration_step", "count"]].set_index("registration_step")
     
+    
+    step_labels = {
+        "1": "Step 1",
+        "2": "Step 2",
+        "3": "Step 3",
+        "4": "Step 4",
+        "completed": "Completed"
+    }
+
+    df["registration_step"] = df["registration_step"].astype(str)
+    df["step_name"] = df["registration_step"].map(step_labels).fillna("Unknown")
+
     fig = go.Figure(data=go.Heatmap(
         z=[df["count"].values],
-        x=["Step 1", "Step 2", "Step 3", "Step 4", "Completed"][:len(df)],
+        x=df["step_name"],   # ✅ dynamic
         y=["Participants"],
         colorscale="Blues",
         text=df["count"].values,

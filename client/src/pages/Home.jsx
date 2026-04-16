@@ -7,7 +7,7 @@ import VideoRibbon from "../components/VideoRibbon";
 import { useState, useEffect } from "react";
 import ChatBot from "../components/Chatbot";
 import FAQ from "../components/FAQ";
-
+import FadeUpSection from "../components/FadeUpSection";
 
 export default function Home() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -269,6 +269,7 @@ export default function Home() {
             </nav>
 
             {/* HERO */}
+            <FadeUpSection>
             <section
                 id="about"
                 className="pt-24 pb-4 px-8 bg-cover bg-center"
@@ -305,8 +306,9 @@ export default function Home() {
                     </div>
                 </div>
             </section>
-
+</FadeUpSection>
             {/* RIBBONS */}
+            <FadeUpSection>
             <section id="gallery" className="bg-blue-50">
                 <TextRibbon />
                 <ImageRibbon />
@@ -354,11 +356,13 @@ export default function Home() {
 
                 </div>
             </section>
+            </FadeUpSection>
             {/* FOCUS AREAS */}
+            <FadeUpSection>
             <section
                 id="focus"
                 className="py-16 px-6 bg-cover bg-center"
-                style={{ backgroundImage: "url('../public/bg2.jpg')" }}
+                style={{ backgroundImage: "url('../public/bg2.jpeg')" }}
             >
                 <div className="group mb-12 text-center">
                     <h2 className="text-3xl font-bold text-yellow-900">
@@ -413,12 +417,13 @@ export default function Home() {
 
                 </div>
             </section>
-
+            </FadeUpSection>
             {/* PROBLEM STATEMENTS */}
+            <FadeUpSection>
             <section id="problems"
                 className="pt-24 pb-4 px-8 bg-cover bg-center"
-                style={{ backgroundImage: "url('../public/bg4.gif')" }}>
-                <div className="w-full max-w-9xl mx-auto">
+                style={{ backgroundImage: "url('../public/bg4.png')" }}>
+                {/* <div className="w-full max-w-9xl mx-auto"> */}
                     <div className="group mb-10 text-center">
                         <h2 className="text-3xl font-bold mb-2 pt-6 text-white">
                             Problem Statements
@@ -470,13 +475,14 @@ export default function Home() {
                             })}
                         </div>
                     </div>
-                </div>
+                {/* </div> */}
             </section>
-
+</FadeUpSection>
 
             {/* GUIDELINES */}
+            <FadeUpSection>
             <section id="guidelines" className="py-16 px-6 relative bg-cover bg-center"
-                style={{ backgroundImage: "url('/bg6.png')" }}
+                style={{ backgroundImage: "url('/bg6.jpeg')" }}
             >
                 <div className="group max-w-6xl mx-auto text-center">
 
@@ -530,11 +536,12 @@ hover:scale-105 hover:shadow-[0_0_25px_rgba(29,78,216,0.7)]"
 
                 </div>
             </section>
-
+</FadeUpSection>
+<FadeUpSection>
             <section
                 id="eligibility"
                 className="py-20 px-6 relative bg-cover bg-center"
-                style={{ backgroundImage: "url('/bg7.jpg')" }}
+                style={{ backgroundImage: "url('/bg7.jpeg')" }}
             >
                 {/* Overlay for readability */}
 
@@ -545,7 +552,7 @@ hover:scale-105 hover:shadow-[0_0_25px_rgba(29,78,216,0.7)]"
                     <h2 className="text-3xl font-bold mb-2 pt-6 text-green-900">
                         Eligibility
                     </h2>
-                    <p className="max-w-3xl mx-auto text-yellow-200 overflow-hidden opacity-0 transition-all duration-300 max-h-0 group-hover:max-h-20 group-hover:opacity-100 pt-2 pb-6 text-sm">
+                    <p className="max-w-3xl mx-auto text-green-9    00 overflow-hidden opacity-0 transition-all duration-300 max-h-0 group-hover:max-h-20 group-hover:opacity-100 pt-2 pb-6 text-sm">
                         The following Indian Organizations/ Institutions/private sector are eligible to submit proposals.
                     </p>
                     <div className="flex flex-wrap justify-center gap-12">
@@ -578,8 +585,9 @@ hover:scale-105 hover:shadow-[0_0_25px_rgba(29,78,216,0.7)]"
 
                 </div>
             </section>
-
+</FadeUpSection>
             {/* TIMELINE */}
+            <FadeUpSection>
             <section id="timeline">
                 <div className="group px-6 pt-16 pb-16 text-center"
                     style={{ backgroundImage: "url('/bg9.gif')", backgroundSize: 'cover', backgroundPosition: 'center' }}>
@@ -590,8 +598,9 @@ hover:scale-105 hover:shadow-[0_0_25px_rgba(29,78,216,0.7)]"
                 </div>
                 <Timeline />
             </section>
-
+</FadeUpSection>
             {/* CONTACT */}
+            <FadeUpSection>
             <section id="contact" className="py-16 px-6 pt-12 text-center bg-blue-50">
                 <div className="group">
                     <h2 className="text-3xl font-bold mb-2">Contact</h2>
@@ -621,7 +630,8 @@ hover:scale-105 hover:shadow-[0_0_25px_rgba(29,78,216,0.7)]"
                     </div>
                 </div>
             </section>
-
+</FadeUpSection>
+<FadeUpSection>
             <section id="contact" className="py-16 px-6 pt-12 text-center bg-blue-50">
                 <div className="group">
                     <Link to="/privacy" className="group-hover:text-blue-600 group-hover:underline text-lg justify-center flex mt-4 text-gray-600 transition-colors duration-200">
@@ -636,6 +646,8 @@ hover:scale-105 hover:shadow-[0_0_25px_rgba(29,78,216,0.7)]"
                     </p>
                 </div>
             </section>
+            </FadeUpSection>
+            <FadeUpSection>
             <section>
                 <div className="group px-6 pt-8 pb-16 text-center">
                     <h2 className="text-3xl font-bold mb-2">Frequently Asked Questions</h2>
@@ -647,7 +659,7 @@ hover:scale-105 hover:shadow-[0_0_25px_rgba(29,78,216,0.7)]"
                     </div>
                 </div>
             </section>
-
+</FadeUpSection>
 
             {/* FOOTER */}
             <footer className="text-center py-6 text-gray-500 text-sm">
