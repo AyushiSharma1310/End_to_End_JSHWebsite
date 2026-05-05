@@ -37,7 +37,7 @@ export default function ViewSubmittedForm() {
     try {
       const username = overrideUsername || localStorage.getItem("username");
 
-      const res = await fetch(`http://localhost:5000/user/profile?username=${username}`);
+      const res = await fetch(`http://localhost:8000/user/profile/?username=${username}`);
       const data = await res.json();
 
       if (!data.success) {

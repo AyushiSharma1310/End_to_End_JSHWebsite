@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import TextRibbon from "../components/TextRibbon";
 import Timeline from "../components/WaterTimeline";
 import VideoRibbon from "../components/VideoRibbon";
+import axios from "axios";
 import { useState, useEffect } from "react";
 import ChatBot from "../components/Chatbot";
 import FAQ from "../components/FAQ";
@@ -14,7 +15,19 @@ export default function Home() {
     const [userRole, setUserRole] = useState(null);
     const [isMoreMenuOpen, setIsMoreMenuOpen] = useState(false);
     const [visibleMenuCount, setVisibleMenuCount] = useState(5);
+    const [participants, setParticipants] = useState([]);
 
+    useEffect(() => {
+        axios.get("http://localhost:8000/participants/")
+            .then((res) => {
+                console.log("DATA:", res.data);
+                setParticipants(res.data);
+            })
+            .catch((err) => {
+                console.error(err);
+            });
+    }, []);
+    
     const menuOptions = [
         { id: "about", label: "About" },
         { id: "focus", label: "Focus Areas" },
@@ -270,165 +283,168 @@ export default function Home() {
 
             {/* HERO */}
             <FadeUpSection>
-            <section
-                id="about"
-                className="pt-24 pb-4 px-8 bg-cover bg-center"
-                style={{ backgroundImage: "url('../public/bg11.jpg')" }}
-            >
-                <div className="max-w-1xl mx-auto grid md:grid-cols-2 gap-1 items-center justify-center ">
+                <section
+                    id="about"
+                    className="pt-24 pb-4 px-8 bg-cover bg-center"
+                    // style={{ backgroundImage: "url('../public/bg11.jpg')"
+                        
+                    //  }}
+                >
+                    <div className="max-w-1xl mx-auto grid md:grid-cols-2 gap-1 items-center justify-center ">
 
-                    <div className="flex flex-col items-start text-left gap-6 w-full px-full py-4 shadow-lg rounded-2xl">
-                        <h2 className="text-5xl font-bold text-blue-900">
-                            Jal Shakti Hackathon 2026 💧
-                        </h2>
+                        <div className="flex flex-col items-start text-justify gap-6 w-full px-full py-4 rounded-2xl">
+                            <h2 className="text-5xl font-bold text-blue-900">
+                                Jal Shakti Hackathon 2026 💧
+                            </h2>
 
-                        <p className="text-base font-bold text-gray-800 leading-relaxed"
-                        >
-                            Bharat WIN is a national initiative of the Department of Water Resources, River Development and Ganga Rejuvenation, Ministry of Jal Shakti, Government of India , aimed at driving meaningful and technology-led transformation in India's water sector. The mission is to accelerate innovation by connecting scientific research, entrepreneurship, and grassroots initiatives to ensure accessibility, affordability, and sustainability. The initiative strengthens the research and innovation ecosystem by providing both institutional and financial support, encouraging development of technologies that can be tested, scaled, and deployed in real-world settings to solve critical water challenges. <br /><br />To nurture innovation, DoWR, RD & GR, MoJS, will organize Jal Shakti Hackathons under Bharat WIN Initiative and invite calls for proposals that inspire creative solutions in priority areas such as water resource management, wastewater treatment, water-use efficiency, climate resilience, flood management, smart monitoring systems, precision agriculture, and urban hydrology. The National Institute of Hydrology (NIH), Roorkee, has been designated as Project Implementation Agency (PIA) for this initiative. The Hackathon winners will be awarded Rs 1 lakh for developing Proof-of-Concept (PoC). The selected proposals will be evaluated further for grant-in-aid.
-                        </p>
+                            <p className="text-base font-bold text-gray-800 leading-relaxed"
+                            >
+                                Bharat WIN is a national initiative of the Department of Water Resources, River Development and Ganga Rejuvenation, Ministry of Jal Shakti, Government of India , aimed at driving meaningful and technology-led transformation in India's water sector. The mission is to accelerate innovation by connecting scientific research, entrepreneurship, and grassroots initiatives to ensure accessibility, affordability, and sustainability. The initiative strengthens the research and innovation ecosystem by providing both institutional and financial support, encouraging development of technologies that can be tested, scaled, and deployed in real-world settings to solve critical water challenges. <br /><br />To nurture innovation, DoWR, RD & GR, MoJS, will organize Jal Shakti Hackathons under Bharat WIN Initiative and invite calls for proposals that inspire creative solutions in priority areas such as water resource management, wastewater treatment, water-use efficiency, climate resilience, flood management, smart monitoring systems, precision agriculture, and urban hydrology. The National Institute of Hydrology (NIH), Roorkee, has been designated as Project Implementation Agency (PIA) for this initiative. The Hackathon winners will be awarded Rs 1 lakh for developing Proof-of-Concept (PoC). The selected proposals will be evaluated further for grant-in-aid.
+                            </p>
 
-                        <Link
-                            to="/login"
-                            className="mt-2 bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700"
-                        >
-                            Apply Now
-                        </Link>
-                    </div>
+                            <Link
+                                to="/login"
+                                className="mt-2 bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700"
+                            >
+                                Apply Now
+                            </Link>
+                        </div>
 
-                    <div className="">
-                        <div className="w-full h-full bg-gradient-to-r from-blue-900 to-blue-500 rounded-2xl shadow-lg overflow-hidden relative flex justify-center items-center">
-                            <VideoRibbon />
+                        <div>
+                            <div>
+                                <VideoRibbon />
+                            </div>
+                        </div>
+                        <div>
+                            {/* ChatBot */}
+                            <ChatBot />
                         </div>
                     </div>
-                    <div>
-                        {/* ChatBot */}
-                        <ChatBot />
-                    </div>
-                </div>
-            </section>
-</FadeUpSection>
+                </section>
+            </FadeUpSection>
             {/* RIBBONS */}
             <FadeUpSection>
-            <section id="gallery" className="bg-blue-50">
-                <TextRibbon />
-                <ImageRibbon />
-            </section>
-            {/* Hackathon Highlights */}
-            <section
-                id="focus"
-                className="py-16 px-6 bg-cover bg-center"
-                style={{ backgroundImage: "url('../public/bg3.jpg')" }}
-            >
-                <div className="group mb-12 text-center">
-                    <h2 className="text-3xl font-bold text-blue-900">
-                        Hackathon Highlights
-                    </h2>
-                    <p className="mx-auto mt-2 max-w-3xl overflow-hidden text-sm leading-relaxed text-blue-900/80 opacity-0 transition-all duration-300 max-h-0 group-hover:max-h-24 group-hover:opacity-100">
-                        Key benefits for participants including rewards, grant support, and national-level visibility for impactful water innovation.
-                    </p>
-                </div>
-
-                <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
-
-                    <div className="bg-white/90 rounded-2xl shadow p-6 text-center transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(59,130,246,0.45)]">
-                        <Droplet className="mx-auto mb-4 text-blue-500" size={40} />
-                        <h4 className="font-semibold text-lg">Rs. 1  Lakh Reward</h4>
-                        <p className="text-sm text-gray-600 mt-2">
-                            Reward to Hackathon Winners for developing Proof-of-Concept (PoC) in water-related innovations tackling water challenges.
+                <section id="gallery" className="bg-blue-50">
+                    <TextRibbon />
+                    <ImageRibbon />
+                </section>
+                {/* Hackathon Highlights */}
+                <section
+                    id="focus"
+                    className="py-16 px-6 bg-cover bg-center"
+                    // style={{ backgroundImage: "url('../public/bg3.jpg')" }}
+                >
+                    <div className="group mb-12 text-center">
+                        <h2 className="text-3xl font-bold text-blue-900">
+                            Hackathon Highlights
+                        </h2>
+                        <p className="mx-auto mt-2 max-w-3xl overflow-hidden text-sm leading-relaxed text-blue-900/80 opacity-0 transition-all duration-300 max-h-0 group-hover:max-h-24 group-hover:opacity-100">
+                            Key benefits for participants including rewards, grant support, and national-level visibility for impactful water innovation.
                         </p>
                     </div>
 
-                    <div className="bg-white/90 rounded-2xl shadow p-6 text-center transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(59,130,246,0.45)]">
-                        <Users className="mx-auto mb-4 text-blue-500" size={40} />
-                        <h4 className="font-semibold text-lg">Grant-in-aid</h4>
-                        <p className="text-sm text-gray-600 mt-2">
-                            Dedicated funding for developing full scale prototypes/technology.
-                        </p>
-                    </div>
+                    <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
 
-                    <div className="bg-white/90 rounded-2xl shadow p-6 text-center transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(59,130,246,0.45)]">
-                        <Trophy className="mx-auto mb-4 text-blue-500" size={40} />
-                        <h4 className="font-semibold text-lg">Gain Recognition and Exposure</h4>
-                        <p className="text-sm text-gray-600 mt-2">
-                            Showcase your extraordinary AI, IoT, and smart water infrastructure solutions to policy makers.
-                        </p>
-                    </div>
+                        <div className="bg-white/90 rounded-2xl shadow p-6 text-center transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(59,130,246,0.45)]">
+                            <Droplet className="mx-auto mb-4 text-blue-500" size={40} />
+                            <h4 className="font-semibold text-lg">Rs. 1  Lakh Reward</h4>
+                            <p className="text-sm text-gray-600 mt-2">
+                                Reward to Hackathon Winners for developing Proof-of-Concept (PoC) in water-related innovations tackling water challenges.
+                            </p>
+                        </div>
 
-                </div>
-            </section>
+                        <div className="bg-white/90 rounded-2xl shadow p-6 text-center transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(59,130,246,0.45)]">
+                            <Users className="mx-auto mb-4 text-blue-500" size={40} />
+                            <h4 className="font-semibold text-lg">Grant-in-aid</h4>
+                            <p className="text-sm text-gray-600 mt-2">
+                                Dedicated funding for developing full scale prototypes/technology.
+                            </p>
+                        </div>
+
+                        <div className="bg-white/90 rounded-2xl shadow p-6 text-center transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(59,130,246,0.45)]">
+                            <Trophy className="mx-auto mb-4 text-blue-500" size={40} />
+                            <h4 className="font-semibold text-lg">Gain Recognition and Exposure</h4>
+                            <p className="text-sm text-gray-600 mt-2">
+                                Showcase your extraordinary AI, IoT, and smart water infrastructure solutions to policy makers.
+                            </p>
+                        </div>
+
+                    </div>
+                </section>
             </FadeUpSection>
             {/* FOCUS AREAS */}
             <FadeUpSection>
-            <section
-                id="focus"
-                className="py-16 px-6 bg-cover bg-center"
-                style={{ backgroundImage: "url('../public/bg2.jpeg')" }}
-            >
-                <div className="group mb-12 text-center">
-                    <h2 className="text-3xl font-bold text-yellow-900">
-                        Focus Areas
-                    </h2>
-                    <p className="mx-auto mt-2 max-w-3xl overflow-hidden text-sm leading-relaxed text-yellow-900 opacity-0 transition-all duration-300 max-h-0 group-hover:max-h-24 group-hover:opacity-100">
-                        Priority domains where teams can frame high-impact solutions in assessment, efficiency, resilience, monitoring, and water quality.
-                    </p>
-                </div>
-
-                <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
-
-                    <div className="bg-white/90 rounded-2xl shadow p-6 text-center transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(59,130,246,0.45)]">
-                        <CircleCheckBig className="mx-auto mb-4 text-blue-500" size={40} />
-                        <h4 className="font-semibold text-lg">Water Resources Assessment and Management</h4>
+                <section
+                    id="focus"
+                    className="py-16 px-6 bg-cover bg-center"
+                    // style={{ backgroundImage: "url('../public/bg2.jpeg')" }}
+                >
+                    <div className="group mb-12 text-center">
+                        <h2 className="text-3xl font-bold text-yellow-900">
+                            Focus Areas
+                        </h2>
+                        <p className="mx-auto mt-2 max-w-3xl overflow-hidden text-sm leading-relaxed text-yellow-900 opacity-0 transition-all duration-300 max-h-0 group-hover:max-h-24 group-hover:opacity-100">
+                            Priority domains where teams can frame high-impact solutions in assessment, efficiency, resilience, monitoring, and water quality.
+                        </p>
                     </div>
 
-                    <div className="bg-white/90 rounded-2xl shadow p-6 text-center transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(59,130,246,0.45)]">
-                        <Recycle className="mx-auto mb-4 text-blue-500" size={40} />
-                        <h4 className="font-semibold text-lg">Waste-water Management</h4>
-                    </div>
+                    <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
 
-                    <div className="bg-white/90 rounded-2xl shadow p-6 text-center transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(59,130,246,0.45)]">
-                        <CloudRain className="mx-auto mb-4 text-blue-500" size={40} />
-                        <h4 className="font-semibold text-lg">Climate Resilience and Adaptation</h4>
-                    </div>
+                        <div className="bg-white/90 rounded-2xl shadow p-6 text-center transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(59,130,246,0.45)]">
+                            <CircleCheckBig className="mx-auto mb-4 text-blue-500" size={40} />
+                            <h4 className="font-semibold text-lg">Water Resources Assessment and Management</h4>
+                        </div>
 
-                    <div className="bg-white/90 rounded-2xl shadow p-6 text-center transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(59,130,246,0.45)]">
-                        <Leaf className="mx-auto mb-4 text-blue-500" size={40} />
-                        <h4 className="font-semibold text-lg">Water Use Efficiency and Circular Economy</h4>
-                    </div>
-                    <div className="bg-white/90 rounded-2xl shadow p-6 text-center transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(59,130,246,0.45)]">
-                        <Cpu className="mx-auto mb-4 text-blue-500" size={40} />
-                        <h4 className="font-semibold text-lg">Smart Water Grids, Internet of Things, and data-driven water (surface and ground) management approaches</h4>
-                    </div>
-                    <div className="bg-white/90 rounded-2xl shadow p-6 text-center transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(59,130,246,0.45)]">
-                        <Mountain className="mx-auto mb-4 text-blue-500" size={40} />
-                        <h4 className="font-semibold text-lg">Efficient Irrigation, Precision Agriculture and Rainwater Harvesting</h4>
-                    </div>
-                    <div className="bg-white/90 rounded-2xl shadow p-6 text-center transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(59,130,246,0.45)]">
-                        <Waves className="mx-auto mb-4 text-blue-500" size={40} />
-                        <h4 className="font-semibold text-lg">River Basin & Flood Management, Glacial Lake Outburst Floods</h4>
-                    </div>
-                    <div className="bg-white/90 rounded-2xl shadow p-6 text-center transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(59,130,246,0.45)]">
-                        <Building className="mx-auto mb-4 text-blue-500" size={40} />
-                        <h4 className="font-semibold text-lg">Hydrological modelling inclusive of Urban Hydrology</h4>
-                    </div>
-                    <div className="bg-white/90 rounded-2xl shadow p-6 text-center transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(59,130,246,0.45)]">
-                        <GlassWater className="mx-auto mb-4 text-blue-500" size={40} />
-                        <h4 className="font-semibold text-lg"> Quality of Water and related issues</h4>
-                    </div>
+                        <div className="bg-white/90 rounded-2xl shadow p-6 text-center transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(59,130,246,0.45)]">
+                            <Recycle className="mx-auto mb-4 text-blue-500" size={40} />
+                            <h4 className="font-semibold text-lg">Waste-water Management</h4>
+                        </div>
 
-                </div>
-            </section>
+                        <div className="bg-white/90 rounded-2xl shadow p-6 text-center transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(59,130,246,0.45)]">
+                            <CloudRain className="mx-auto mb-4 text-blue-500" size={40} />
+                            <h4 className="font-semibold text-lg">Climate Resilience and Adaptation</h4>
+                        </div>
+
+                        <div className="bg-white/90 rounded-2xl shadow p-6 text-center transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(59,130,246,0.45)]">
+                            <Leaf className="mx-auto mb-4 text-blue-500" size={40} />
+                            <h4 className="font-semibold text-lg">Water Use Efficiency and Circular Economy</h4>
+                        </div>
+                        <div className="bg-white/90 rounded-2xl shadow p-6 text-center transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(59,130,246,0.45)]">
+                            <Cpu className="mx-auto mb-4 text-blue-500" size={40} />
+                            <h4 className="font-semibold text-lg">Smart Water Grids, Internet of Things, and data-driven water (surface and ground) management approaches</h4>
+                        </div>
+                        <div className="bg-white/90 rounded-2xl shadow p-6 text-center transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(59,130,246,0.45)]">
+                            <Mountain className="mx-auto mb-4 text-blue-500" size={40} />
+                            <h4 className="font-semibold text-lg">Efficient Irrigation, Precision Agriculture and Rainwater Harvesting</h4>
+                        </div>
+                        <div className="bg-white/90 rounded-2xl shadow p-6 text-center transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(59,130,246,0.45)]">
+                            <Waves className="mx-auto mb-4 text-blue-500" size={40} />
+                            <h4 className="font-semibold text-lg">River Basin & Flood Management, Glacial Lake Outburst Floods</h4>
+                        </div>
+                        <div className="bg-white/90 rounded-2xl shadow p-6 text-center transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(59,130,246,0.45)]">
+                            <Building className="mx-auto mb-4 text-blue-500" size={40} />
+                            <h4 className="font-semibold text-lg">Hydrological modelling inclusive of Urban Hydrology</h4>
+                        </div>
+                        <div className="bg-white/90 rounded-2xl shadow p-6 text-center transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(59,130,246,0.45)]">
+                            <GlassWater className="mx-auto mb-4 text-blue-500" size={40} />
+                            <h4 className="font-semibold text-lg"> Quality of Water and related issues</h4>
+                        </div>
+
+                    </div>
+                </section>
             </FadeUpSection>
             {/* PROBLEM STATEMENTS */}
             <FadeUpSection>
-            <section id="problems"
-                className="pt-24 pb-4 px-8 bg-cover bg-center"
-                style={{ backgroundImage: "url('../public/bg4.png')" }}>
-                {/* <div className="w-full max-w-9xl mx-auto"> */}
+                <section id="problems"
+                    className="pt-24 pb-4 px-8 bg-cover bg-center"
+                    // style={{ backgroundImage: "url('../public/bg4.png')" }}
+                    >
+                    {/* <div className="w-full max-w-9xl mx-auto"> */}
                     <div className="group mb-10 text-center">
-                        <h2 className="text-3xl font-bold mb-2 pt-6 text-white">
+                        <h2 className="text-3xl font-bold mb-2 pt-6 text-green-900">
                             Problem Statements
                         </h2>
-                        <p className="max-w-3xl mx-auto text-gray-600 overflow-hidden opacity-0 transition-all duration-300 max-h-0 group-hover:max-h-20 group-hover:opacity-100 pt-2 pb-6 text-sm text-white/90">
+                        <p className="max-w-3xl mx-auto text-gray-600 overflow-hidden opacity-0 transition-all duration-300 max-h-0 group-hover:max-h-20 group-hover:opacity-100 pt-2 pb-6 text-sm text-green-600">
                             Applicants may formulate their problem statements by identifying water-related issues, preferably aligned with the given Focus Areas. A few identified problem statements are provided below, which may also be used as a basis for developing new ideas.
                         </p>
                     </div>
@@ -475,191 +491,215 @@ export default function Home() {
                             })}
                         </div>
                     </div>
-                {/* </div> */}
-            </section>
-</FadeUpSection>
+                    {/* </div> */}
+                </section>
+            </FadeUpSection>
 
             {/* GUIDELINES */}
             <FadeUpSection>
-            <section id="guidelines" className="py-16 px-6 relative bg-cover bg-center"
-                style={{ backgroundImage: "url('/bg6.jpeg')" }}
-            >
-                <div className="group max-w-6xl mx-auto text-center">
+                <section id="guidelines" className="py-16 px-6 relative bg-cover bg-center"
+                    // style={{ backgroundImage: "url('/bg6.jpeg')" }}
+                >
+                    <div className="group max-w-6xl mx-auto text-center">
 
-                    <h2 className="text-3xl font-bold mb-2 pt-6 text-blue-900">
-                        Guidelines
-                    </h2>
-                    <p className="max-w-3xl mx-auto text-blue-900 overflow-hidden opacity-0 transition-all duration-300 max-h-0 group-hover:max-h-20 group-hover:opacity-100 pt-2 pb-6 text-sm">
-                        Open to students, professionals, startups, and innovators across India. Teams must demonstrate innovation, feasibility, and scalability.
-                    </p>
-                    <div className="grid grid-cols-2 gap-6">
+                        <h2 className="text-3xl font-bold mb-2 pt-6 text-blue-900">
+                            Guidelines
+                        </h2>
+                        <p className="max-w-3xl mx-auto text-blue-900 overflow-hidden opacity-0 transition-all duration-300 max-h-0 group-hover:max-h-20 group-hover:opacity-100 pt-2 pb-6 text-sm">
+                            Open to students, professionals, startups, and innovators across India. Teams must demonstrate innovation, feasibility, and scalability.
+                        </p>
+                        <div className="grid grid-cols-2 gap-6">
 
-                        {/* LEFT COLUMN */}
-                        <div className="space-y-4">
-                            {visibleGuidelines
-                                .filter((_, i) => i % 2 === 0)
-                                .map((item, index) => (
-                                    <div
-                                        key={index}
-                                        className="bg-white/90 backdrop-blur-md p-4 rounded-xl text-sm text-left
+                            {/* LEFT COLUMN */}
+                            <div className="space-y-4">
+                                {visibleGuidelines
+                                    .filter((_, i) => i % 2 === 0)
+                                    .map((item, index) => (
+                                        <div
+                                            key={index}
+                                            className="bg-white/90 backdrop-blur-md p-4 rounded-xl text-sm text-left
 shadow-md transition-all duration-300 ease-in-out
 hover:scale-105 hover:shadow-[0_0_25px_rgba(29,78,216,0.7)]"
-                                    >
-                                        <span className="font-semibold text-blue-700">
-                                            Guideline {index * 2 + 1}:
-                                        </span>{" "}
-                                        {item}
-                                    </div>
-                                ))}
-                        </div>
-
-                        {/* RIGHT COLUMN */}
-                        <div className="space-y-4">
-                            {visibleGuidelines
-                                .filter((_, i) => i % 2 !== 0)
-                                .map((item, index) => (
-                                    <div
-                                        key={index}
-                                        className="bg-white/90 backdrop-blur-md p-4 rounded-xl text-sm text-left
-shadow-md transition-all duration-300 ease-in-out
-hover:scale-105 hover:shadow-[0_0_25px_rgba(29,78,216,0.7)]"
-                                    >
-                                        <span className="font-semibold text-blue-700">
-                                            Guideline {index * 2 + 2}:
-                                        </span>{" "}
-                                        {item}
-                                    </div>
-                                ))}
-                        </div>
-
-                    </div>
-
-                </div>
-            </section>
-</FadeUpSection>
-<FadeUpSection>
-            <section
-                id="eligibility"
-                className="py-20 px-6 relative bg-cover bg-center"
-                style={{ backgroundImage: "url('/bg7.jpeg')" }}
-            >
-                {/* Overlay for readability */}
-
-
-                {/* Content */}
-                <div className="group max-w-6xl mx-auto text-center">
-
-                    <h2 className="text-3xl font-bold mb-2 pt-6 text-green-900">
-                        Eligibility
-                    </h2>
-                    <p className="max-w-3xl mx-auto text-green-9    00 overflow-hidden opacity-0 transition-all duration-300 max-h-0 group-hover:max-h-20 group-hover:opacity-100 pt-2 pb-6 text-sm">
-                        The following Indian Organizations/ Institutions/private sector are eligible to submit proposals.
-                    </p>
-                    <div className="flex flex-wrap justify-center gap-12">
-
-                        {[
-                            <span><b>Category 1:</b> Startups, MSMEs, Industries and Incubators</span>,
-                            <span><b>Category 2:</b> Laboratories, R&D institutions and registered societies.</span>,
-                            <span><b>Category 3:</b> Academia, universities & colleges.</span>,
-                            <span><b>Category 4:</b> Indian NGOs registered under relevant Society Act, non-profit-making recognized Indian Private R&D Institutions/ Organizations.</span>,
-                            <span><b>Category 5:</b> Any other entities that are not covered under the above categories, including individuals.</span>
-                        ].map((item, index) => (
-                            <div key={index} className="flex flex-col items-center group">
-
-                                {/* Hanging thread */}
-                                <div className="w-[2px] h-12 bg-gray-500"></div>
-
-                                {/* Leaf */}
-                                <div
-                                    className="leaf-shape text-white text-base font-medium px-8 py-5 shadow-lg
-            transform origin-top transition-all duration-500
-            group-hover:animate-leafSwing group-hover:scale-110"
-                                >
-                                    {item}
-                                </div>
-
+                                        >
+                                            <span className="font-semibold text-blue-700">
+                                                Guideline {index * 2 + 1}:
+                                            </span>{" "}
+                                            {item}
+                                        </div>
+                                    ))}
                             </div>
-                        ))}
+
+                            {/* RIGHT COLUMN */}
+                            <div className="space-y-4">
+                                {visibleGuidelines
+                                    .filter((_, i) => i % 2 !== 0)
+                                    .map((item, index) => (
+                                        <div
+                                            key={index}
+                                            className="bg-white/90 backdrop-blur-md p-4 rounded-xl text-sm text-left
+shadow-md transition-all duration-300 ease-in-out
+hover:scale-105 hover:shadow-[0_0_25px_rgba(29,78,216,0.7)]"
+                                        >
+                                            <span className="font-semibold text-blue-700">
+                                                Guideline {index * 2 + 2}:
+                                            </span>{" "}
+                                            {item}
+                                        </div>
+                                    ))}
+                            </div>
+
+                        </div>
 
                     </div>
-
-                </div>
-            </section>
-</FadeUpSection>
-            {/* TIMELINE */}
-            <FadeUpSection>
-            <section id="timeline">
-                <div className="group px-6 pt-16 pb-16 text-center"
-                    style={{ backgroundImage: "url('/bg9.gif')", backgroundSize: 'cover', backgroundPosition: 'center' }}>
-                    <h2 className="text-3xl text-blue-900 font-bold mb-2">Timeline</h2>
-                    <p className="mx-auto max-w-4xl text-blue-900 font-bold overflow-hidden opacity-0 transition-all duration-300 max-h-0 group-hover:max-h-20 group-hover:opacity-100">
-                        Track the end-to-end schedule from registrations to evaluation and final outcomes.
-                    </p>
-                </div>
-                <Timeline />
-            </section>
-</FadeUpSection>
-            {/* CONTACT */}
-            <FadeUpSection>
-            <section id="contact" className="py-16 px-6 pt-12 text-center bg-blue-50">
-                <div className="group">
-                    <h2 className="text-3xl font-bold mb-2">Contact</h2>
-                    <p className="text-gray-600 overflow-hidden opacity-0 transition-all duration-300 max-h-0 group-hover:max-h-20 group-hover:opacity-100">
-                        Reach out to the organizing team for any queries or support regarding the hackathon.
-                    </p>
-                    <div className="group-hover:mt-6 mt-4 text-blue-700 font-semibold transition-all duration-300">
-                        <div className="text-2xl">Jal Shakti Hackathon Secretariat</div>
-
-                        <br />
-                        <a href="https://www.google.com/maps/place/National+Institute+of+Hydrology/@29.8677646,77.8955828,17.38z/data=!4m6!3m5!1s0x390eb364cbcf1b63:0xd5f911e29e569415!8m2!3d29.8685074!4d77.8942169!16s%2Fm%2F0h7nblq?entry=ttu&g_ep=EgoyMDI2MDQwNy4wIKXMDSoASAFQAw%3D%3D/" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline transition-colors duration-200">
-                            Jal Vigyan Bhawan, Roorkee, District Haridwar, Uttarakhand - 247667, India.
-                        </a>
-                        <br />
-                        <a
-                            href="tel:+919876543210"
-                            className="text-blue-600 hover:underline transition-colors duration-200"
-                        >
-                            Phone: +91-1332-249410
-                        </a>
-                        <br />
-                        Fax: +91-1332-272123
-                        <br />
-                        <a href="mailto:hackathon.nihr@gov.in" className="text-blue-600 hover:underline">
-                            Email: hackathon.nihr@gov.in
-                        </a>
-                    </div>
-                </div>
-            </section>
-</FadeUpSection>
-<FadeUpSection>
-            <section id="contact" className="py-16 px-6 pt-12 text-center bg-blue-50">
-                <div className="group">
-                    <Link to="/privacy" className="group-hover:text-blue-600 group-hover:underline text-lg justify-center flex mt-4 text-gray-600 transition-colors duration-200">
-                        <h1 className="flex items-center justify-center gap-3 text-4xl font-extrabold text-blue-900 mb-8">
-                            <CircleAlert className="mx-auto text-blue-500" size={28} />
-                            Privacy Policy
-                        </h1>
-
-                    </Link>
-                    <p className="text-gray-600 overflow-hidden opacity-0 transition-all duration-300 max-h-0 group-hover:max-h-20 group-hover:opacity-100">
-                        Read our privacy policy regarding the hackathon.
-                    </p>
-                </div>
-            </section>
+                </section>
             </FadeUpSection>
             <FadeUpSection>
-            <section>
-                <div className="group px-6 pt-8 pb-16 text-center">
-                    <h2 className="text-3xl font-bold mb-2">Frequently Asked Questions</h2>
-                    <p className="text-gray-600 overflow-hidden opacity-0 transition-all duration-300 max-h-0 group-hover:max-h-20 group-hover:opacity-100">
-                        Reach out to the organizing team for any queries or support regarding the hackathon.
-                    </p>
-                    <div className="group-hover:mt-6 mt-4 text-blue-700 font-semibold transition-all duration-300">
-                     <FAQ />
+                <section
+                    id="eligibility"
+                    className="py-20 px-6 relative bg-cover bg-center"
+                    // style={{ backgroundImage: "url('/bg7.jpeg')" }}
+                >
+                    {/* Overlay for readability */}
+
+
+                    {/* Content */}
+                    <div className="group max-w-6xl mx-auto text-center">
+
+                        <h2 className="text-3xl font-bold mb-2 pt-6 text-green-900">
+                            Eligibility
+                        </h2>
+                        <p className="max-w-3xl mx-auto text-green-9    00 overflow-hidden opacity-0 transition-all duration-300 max-h-0 group-hover:max-h-20 group-hover:opacity-100 pt-2 pb-6 text-sm">
+                            The following Indian Organizations/ Institutions/private sector are eligible to submit proposals.
+                        </p>
+                        <div className="flex flex-wrap justify-center gap-12">
+
+                            {[
+                                <span><b>Category 1:</b> Startups, MSMEs, Industries and Incubators</span>,
+                                <span><b>Category 2:</b> Laboratories, R&D institutions and registered societies.</span>,
+                                <span><b>Category 3:</b> Academia, universities & colleges.</span>,
+                                <span><b>Category 4:</b> Indian NGOs registered under relevant Society Act, non-profit-making recognized Indian Private R&D Institutions/ Organizations.</span>,
+                                <span><b>Category 5:</b> Any other entities that are not covered under the above categories, including individuals.</span>
+                            ].map((item, index) => (
+                                <div key={index} className="flex flex-col items-center group">
+
+                                    {/* Hanging thread */}
+                                    <div className="w-[2px] h-12 bg-gray-500"></div>
+
+                                    {/* Leaf */}
+                                    <div
+                                        className="leaf-shape text-white text-base font-medium px-8 py-5 shadow-lg
+            transform origin-top transition-all duration-500
+            group-hover:animate-leafSwing group-hover:scale-110"
+                                    >
+                                        {item}
+                                    </div>
+
+                                </div>
+                            ))}
+
+                        </div>
+
                     </div>
+                </section>
+            </FadeUpSection>
+            {/* TIMELINE */}
+            <FadeUpSection>
+                <section id="timeline">
+                    <div className="group px-6 pt-16 pb-16 text-center"
+                        // style={{ backgroundImage: "url('/bg9.gif')", backgroundSize: 'cover', backgroundPosition: 'center' }}
+                        >
+                        <h2 className="text-3xl text-blue-900 font-bold mb-2">Timeline</h2>
+                        <p className="mx-auto max-w-4xl text-blue-900 font-bold overflow-hidden opacity-0 transition-all duration-300 max-h-0 group-hover:max-h-20 group-hover:opacity-100">
+                            Track the end-to-end schedule from registrations to evaluation and final outcomes.
+                        </p>
+                    </div>
+                    <Timeline />
+                </section>
+            </FadeUpSection>
+            {/* CONTACT */}
+            <FadeUpSection>
+                <section id="contact" className="py-16 px-6 pt-12 text-center bg-blue-50">
+                    <div className="group">
+                        <h2 className="text-3xl font-bold mb-2">Contact</h2>
+                        <p className="text-gray-600 overflow-hidden opacity-0 transition-all duration-300 max-h-0 group-hover:max-h-20 group-hover:opacity-100">
+                            Reach out to the organizing team for any queries or support regarding the hackathon.
+                        </p>
+                        <div className="group-hover:mt-6 mt-4 text-blue-700 font-semibold transition-all duration-300">
+                            <div className="text-2xl">Jal Shakti Hackathon Secretariat</div>
+
+                            <br />
+                            <a href="https://www.google.com/maps/place/National+Institute+of+Hydrology/@29.8677646,77.8955828,17.38z/data=!4m6!3m5!1s0x390eb364cbcf1b63:0xd5f911e29e569415!8m2!3d29.8685074!4d77.8942169!16s%2Fm%2F0h7nblq?entry=ttu&g_ep=EgoyMDI2MDQwNy4wIKXMDSoASAFQAw%3D%3D/" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline transition-colors duration-200">
+                                Jal Vigyan Bhawan, Roorkee, District Haridwar, Uttarakhand - 247667, India.
+                            </a>
+                            <br />
+                            <a
+                                href="tel:+919876543210"
+                                className="text-blue-600 hover:underline transition-colors duration-200"
+                            >
+                                Phone: +91-1332-249410
+                            </a>
+                            <br />
+                            Fax: +91-1332-272123
+                            <br />
+                            <a href="mailto:hackathon.nihr@gov.in" className="text-blue-600 hover:underline">
+                                Email: hackathon.nihr@gov.in
+                            </a>
+                        </div>
+                    </div>
+                </section>
+            </FadeUpSection>
+            <FadeUpSection>
+                <section id="contact" className="py-16 px-6 pt-12 text-center bg-blue-50">
+                    <div className="group">
+                        <Link to="/privacy" className="group-hover:text-blue-600 group-hover:underline text-lg justify-center flex mt-4 text-gray-600 transition-colors duration-200">
+                            <h1 className="flex items-center justify-center gap-3 text-4xl font-extrabold text-blue-900 mb-8">
+                                <CircleAlert className="mx-auto text-blue-500" size={28} />
+                                Privacy Policy
+                            </h1>
+
+                        </Link>
+                        <p className="text-gray-600 overflow-hidden opacity-0 transition-all duration-300 max-h-0 group-hover:max-h-20 group-hover:opacity-100">
+                            Read our privacy policy regarding the hackathon.
+                        </p>
+                    </div>
+                </section>
+            </FadeUpSection>
+            <FadeUpSection>
+                <section>
+                    <div className="group px-6 pt-8 pb-16 text-center">
+                        <h2 className="text-3xl font-bold mb-2">Frequently Asked Questions</h2>
+                        <p className="text-gray-600 overflow-hidden opacity-0 transition-all duration-300 max-h-0 group-hover:max-h-20 group-hover:opacity-100">
+                            Reach out to the organizing team for any queries or support regarding the hackathon.
+                        </p>
+                        <div className="group-hover:mt-6 mt-4 text-blue-700 font-semibold transition-all duration-300">
+                            <FAQ />
+                        </div>
+                    </div>
+                </section>
+            </FadeUpSection>
+            {/* PARTICIPANTS SECTION */}
+            <section className="py-16 px-6 bg-white">
+                <h2 className="text-2xl font-bold text-center mb-6">
+                    Participants Data (From Django)
+                </h2>
+
+                <div className="max-w-4xl mx-auto space-y-4">
+                    {participants.length === 0 ? (
+                        <p className="text-center text-gray-500">No data found</p>
+                    ) : (
+                        participants.map((p) => (
+                            <div
+                                key={p.id}
+                                className="p-4 border rounded-xl shadow bg-blue-50"
+                            >
+                                <p><b>Name:</b> {p.name}</p>
+                                <p><b>Email:</b> {p.email}</p>
+                                <p><b>Idea:</b> {p.idea}</p>
+                            </div>
+                        ))
+                    )}
                 </div>
             </section>
-</FadeUpSection>
 
             {/* FOOTER */}
             <footer className="text-center py-6 text-gray-500 text-sm">

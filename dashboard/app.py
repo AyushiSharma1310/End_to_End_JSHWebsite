@@ -10,6 +10,8 @@ from flask import Flask, request, jsonify
 from dotenv import load_dotenv
 from flask_cors import CORS
 
+from flask import request, jsonify
+
 # =========================
 # LOAD ENV
 # =========================
@@ -21,6 +23,119 @@ load_dotenv()
 server = Flask(__name__)
 CORS(server)
 
+import psycopg2
+
+conn = psycopg2.connect(
+    dbname="hackathon2026_27",
+    user="postgres",
+    password="JSHS2026",
+    host="localhost",
+    port="5432"
+)
+cursor = conn.cursor()
+
+from werkzeug.security import check_password_hash, generate_password_hash
+
+# =========================
+# USERNAME GENERATOR
+# =========================
+def generate_username():
+    cursor.execute("SELECT COALESCE(MAX(id), 0) FROM participant_registrations")
+    count = cursor.fetchone()[0] + 1
+    return f"jsh26{str(count).zfill(5)}"
+
+
+# =========================
+# REGISTER API
+# =========================
+@server.route("/register", methods=["POST"])
+def register():
+    try:
+        data = request.json
+
+        # Basic validation
+        required_fields = ["name", "email", "password", "mobile"]
+        for field in required_fields:
+            if field not in data or not data[field]:
+                return jsonify({"error": f"{field} is required"}), 400
+
+        # Generate username
+        username = generate_username()
+
+        # Hash password
+        hashed_password = generate_password_hash(data["password"])
+
+        # Insert into DB
+        cursor.execute("""
+            INSERT INTO participant_registrations (
+                name, email, username, password, mobile,
+                gender, state, district, city, pincode,
+                category, organization, organization_address,
+                project_investigator_name, project_investigator_designation,
+                partner_organization, partner_address,
+                partner_investigator_name, partner_investigator_email, partner_investigator_mobile,
+                proposal_title, problem_statement, additional_info,
+                team_name, team_members
+            )
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
+                    %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
+                    %s, %s, %s, %s, %s)
+        """, (
+            data["name"], data["email"], username, hashed_password, data["mobile"],
+            data.get("gender"), data.get("state"), data.get("district"), data.get("city"), data.get("pincode"),
+            data.get("category"), data.get("organization"), data.get("organization_address"),
+            data.get("project_investigator_name"), data.get("project_investigator_designation"),
+            data.get("partner_organization"), data.get("partner_address"),
+            data.get("partner_investigator_name"), data.get("partner_investigator_email"), data.get("partner_investigator_mobile"),
+            data.get("proposal_title"), data.get("problem_statement"), data.get("additional_info"),
+            data.get("team_name"), data.get("team_members")
+        ))
+
+        conn.commit()
+
+        return jsonify({
+            "message": "Registered successfully",
+            "username": username
+        }), 201
+
+    except Exception as e:
+        print("Register Error:", str(e))
+        return jsonify({"error": "Server error"}), 500
+
+
+# =========================
+# LOGIN API
+# =========================
+@server.route("/login", methods=["POST"])
+def login():
+    try:
+        data = request.json
+
+        # Validate input
+        if "username" not in data or "password" not in data:
+            return jsonify({"error": "Username and password required"}), 400
+
+        # Fetch user
+        cursor.execute("""
+            SELECT username, password 
+            FROM participant_registrations 
+            WHERE username = %s
+        """, (data["username"],))
+
+        user = cursor.fetchone()
+
+        # Check password
+        if user and check_password_hash(user[1], data["password"]):
+            return jsonify({
+                "message": "Login successful",
+                "username": user[0]
+            }), 200
+
+        return jsonify({"error": "Invalid credentials"}), 401
+
+    except Exception as e:
+        print("Login Error:", str(e))
+        return jsonify({"error": "Server error"}), 500
 # =========================
 # DASH APP (MOUNTED ON FLASK)
 # =========================

@@ -58,7 +58,7 @@ export default function Login() {
     try {
       setLoading(true);
 
-      const res = await fetch("http://localhost:5000/send-otp", {
+      const res = await fetch("http://localhost:8000/send-otp/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -106,7 +106,7 @@ export default function Login() {
     try {
       setLoading(true);
 
-      const res = await fetch("http://localhost:5000/verify-otp", {
+      const res = await fetch("http://localhost:8000/verify-otp/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -124,7 +124,7 @@ export default function Login() {
       } else {
         // ✅ LOGIN SUCCESS
         localStorage.setItem("isLoggedIn", "true");
-        localStorage.setItem("username", username);
+        localStorage.setItem("username", username.trim());
         localStorage.setItem("userRole", data.role);
 
         // You can store token if backend returns it

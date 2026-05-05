@@ -77,7 +77,7 @@ export default function Register() {
       }
 
       try {
-        const res = await fetch(`http://localhost:5000/user-progress?username=${username}`);
+        const res = await fetch(`http://localhost:8000/user-progress?username=${username}`);
         const data = await res.json();
 
         if (data.success) {
@@ -223,7 +223,7 @@ export default function Register() {
     }
 
     try {
-      const res = await fetch("http://localhost:5000/register", {
+      const res = await fetch("http://localhost:8000/register/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -297,7 +297,7 @@ export default function Register() {
     const username = localStorage.getItem("username");
 
     try {
-      const res = await fetch("http://localhost:5000/update-step2", {
+      const res = await fetch("http://localhost:8000/update-step2", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -339,7 +339,7 @@ export default function Register() {
     const username = localStorage.getItem("username");
 
     try {
-      const res = await fetch("http://localhost:5000/update-step3", {
+      const res = await fetch("http://localhost:8000/update-step3/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -402,7 +402,7 @@ export default function Register() {
 
     try {
       console.log("Making fetch request to update-step4");
-      const res = await fetch("http://localhost:5000/update-step4", {
+      const res = await fetch("http://localhost:8000/update-step4/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -470,7 +470,7 @@ export default function Register() {
 
     try {
       console.log("Making fetch request to update-step5");
-      const res = await fetch("http://localhost:5000/update-step5", {
+      const res = await fetch("http://localhost:8000/update-step5/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -513,7 +513,7 @@ export default function Register() {
     }
 
     try {
-      const res = await fetch("http://localhost:5000/final-submit", {
+      const res = await fetch("http://localhost:8000/final-submit/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username }),
@@ -621,7 +621,7 @@ export default function Register() {
     const username = localStorage.getItem("username");
 
     try {
-      const res = await fetch("http://localhost:5000/update-step2", {
+      const res = await fetch("http://localhost:8000/update-step2", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -655,11 +655,9 @@ export default function Register() {
   const handleStep3SaveOnly = async () => {
     console.log("handleStep3SaveOnly called");
     const username = localStorage.getItem("username");
-    console.log("Username:", username);
-    console.log("Form data:", formData);
 
     try {
-      const res = await fetch("http://localhost:5000/update-step3", {
+      const res = await fetch("http://localhost:8000/update-step3/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -699,7 +697,7 @@ export default function Register() {
 
     try {
       console.log("Making fetch request to update-step4 for save");
-      const res = await fetch("http://localhost:5000/update-step4", {
+      const res = await fetch("http://localhost:8000/update-step4/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -736,7 +734,7 @@ export default function Register() {
     const username = localStorage.getItem("username");
 
     try {
-      const res = await fetch("http://localhost:5000/update-step5", {
+      const res = await fetch("http://localhost:8000/update-step5/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

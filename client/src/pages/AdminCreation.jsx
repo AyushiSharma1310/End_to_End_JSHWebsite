@@ -57,7 +57,7 @@ export default function AdminCreation() {
     try {
       setLoading(true);
 
-      const res = await fetch("http://localhost:5000/create-admin", {
+      const res = await fetch("http://localhost:8000/create-admin/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
