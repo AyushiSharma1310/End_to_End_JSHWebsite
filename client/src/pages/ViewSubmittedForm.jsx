@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import html2pdf from "html2pdf.js";
+import { logoutSession } from "../components/SessionTimer";
 
 export default function ViewSubmittedForm() {
   const navigate = useNavigate();
@@ -80,11 +81,7 @@ export default function ViewSubmittedForm() {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("isLoggedIn");
-    localStorage.removeItem("username");
-    localStorage.removeItem("userRole");
-    localStorage.removeItem("token");
-    localStorage.removeItem("registrationStep");
+    logoutSession();
     navigate("/");
   };
 

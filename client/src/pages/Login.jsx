@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { logoutSession, startSessionTimer } from "../components/SessionTimer";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -126,6 +127,7 @@ export default function Login() {
         localStorage.setItem("isLoggedIn", "true");
         localStorage.setItem("username", username.trim());
         localStorage.setItem("userRole", data.role);
+        startSessionTimer();
 
         // You can store token if backend returns it
         if (data.token) {
@@ -175,11 +177,7 @@ export default function Login() {
      LOGOUT
   ================================= */
   const handleLogout = () => {
-    localStorage.removeItem("isLoggedIn");
-    localStorage.removeItem("username");
-    localStorage.removeItem("token");
-    localStorage.removeItem("registrationStep");
-    localStorage.removeItem("userRole");
+    logoutSession();
     setUsername("");
     setPassword("");
     setOtp("");

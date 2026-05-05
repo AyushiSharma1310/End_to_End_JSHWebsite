@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { logoutSession } from "../components/SessionTimer";
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
@@ -231,10 +232,7 @@ export default function AdminDashboard() {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("isLoggedIn");
-    localStorage.removeItem("username");
-    localStorage.removeItem("token");
-    localStorage.removeItem("userRole");
+    logoutSession();
     navigate("/");
   };
 

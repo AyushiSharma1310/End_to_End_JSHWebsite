@@ -9,6 +9,7 @@ import { useState, useEffect } from "react";
 import ChatBot from "../components/Chatbot";
 import FAQ from "../components/FAQ";
 import FadeUpSection from "../components/FadeUpSection";
+import { logoutSession } from "../components/SessionTimer";
 
 export default function Home() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -184,7 +185,7 @@ export default function Home() {
     }, []);
     return (
 
-        <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white text-gray-800">
+        <div className="min-h-screen overflow-x-hidden bg-gradient-to-b from-blue-50 to-white text-gray-800">
 
             {/* NAVBAR */}
             <nav className="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-8 py-4 bg-white shadow">
@@ -262,7 +263,7 @@ export default function Home() {
                         <button
                             className="bg-red-600 text-white px-5 py-2 rounded-xl"
                             onClick={() => {
-                                localStorage.clear();
+                                logoutSession();
                                 window.location.href = "/";
                             }}
                         >
@@ -282,7 +283,7 @@ export default function Home() {
             </nav>
 
             {/* HERO */}
-            <FadeUpSection>
+            <FadeUpSection direction="up">
                 <section
                     id="about"
                     className="pt-24 pb-4 px-8 bg-cover bg-center"
@@ -323,7 +324,7 @@ export default function Home() {
                 </section>
             </FadeUpSection>
             {/* RIBBONS */}
-            <FadeUpSection>
+            <FadeUpSection direction="left">
                 <section id="gallery" className="bg-blue-50">
                     <TextRibbon />
                     <ImageRibbon />
@@ -373,7 +374,7 @@ export default function Home() {
                 </section>
             </FadeUpSection>
             {/* FOCUS AREAS */}
-            <FadeUpSection>
+            <FadeUpSection direction="right">
                 <section
                     id="focus"
                     className="py-16 px-6 bg-cover bg-center"
@@ -434,7 +435,7 @@ export default function Home() {
                 </section>
             </FadeUpSection>
             {/* PROBLEM STATEMENTS */}
-            <FadeUpSection>
+            <FadeUpSection direction="left">
                 <section id="problems"
                     className="pt-24 pb-4 px-8 bg-cover bg-center"
                     // style={{ backgroundImage: "url('../public/bg4.png')" }}
@@ -496,7 +497,7 @@ export default function Home() {
             </FadeUpSection>
 
             {/* GUIDELINES */}
-            <FadeUpSection>
+            <FadeUpSection direction="right">
                 <section id="guidelines" className="py-16 px-6 relative bg-cover bg-center"
                     // style={{ backgroundImage: "url('/bg6.jpeg')" }}
                 >
@@ -553,7 +554,7 @@ hover:scale-105 hover:shadow-[0_0_25px_rgba(29,78,216,0.7)]"
                     </div>
                 </section>
             </FadeUpSection>
-            <FadeUpSection>
+            <FadeUpSection direction="left">
                 <section
                     id="eligibility"
                     className="py-20 px-6 relative bg-cover bg-center"
@@ -603,7 +604,7 @@ hover:scale-105 hover:shadow-[0_0_25px_rgba(29,78,216,0.7)]"
                 </section>
             </FadeUpSection>
             {/* TIMELINE */}
-            <FadeUpSection>
+            <FadeUpSection direction="right">
                 <section id="timeline">
                     <div className="group px-6 pt-16 pb-16 text-center"
                         // style={{ backgroundImage: "url('/bg9.gif')", backgroundSize: 'cover', backgroundPosition: 'center' }}
@@ -617,7 +618,7 @@ hover:scale-105 hover:shadow-[0_0_25px_rgba(29,78,216,0.7)]"
                 </section>
             </FadeUpSection>
             {/* CONTACT */}
-            <FadeUpSection>
+            <FadeUpSection direction="left">
                 <section id="contact" className="py-16 px-6 pt-12 text-center bg-blue-50">
                     <div className="group">
                         <h2 className="text-3xl font-bold mb-2">Contact</h2>
@@ -648,7 +649,7 @@ hover:scale-105 hover:shadow-[0_0_25px_rgba(29,78,216,0.7)]"
                     </div>
                 </section>
             </FadeUpSection>
-            <FadeUpSection>
+            <FadeUpSection direction="right">
                 <section id="contact" className="py-16 px-6 pt-12 text-center bg-blue-50">
                     <div className="group">
                         <Link to="/privacy" className="group-hover:text-blue-600 group-hover:underline text-lg justify-center flex mt-4 text-gray-600 transition-colors duration-200">
@@ -664,7 +665,7 @@ hover:scale-105 hover:shadow-[0_0_25px_rgba(29,78,216,0.7)]"
                     </div>
                 </section>
             </FadeUpSection>
-            <FadeUpSection>
+            <FadeUpSection direction="up">
                 <section>
                     <div className="group px-6 pt-8 pb-16 text-center">
                         <h2 className="text-3xl font-bold mb-2">Frequently Asked Questions</h2>
@@ -678,28 +679,30 @@ hover:scale-105 hover:shadow-[0_0_25px_rgba(29,78,216,0.7)]"
                 </section>
             </FadeUpSection>
             {/* PARTICIPANTS SECTION */}
-            <section className="py-16 px-6 bg-white">
-                <h2 className="text-2xl font-bold text-center mb-6">
-                    Participants Data (From Django)
-                </h2>
+            <FadeUpSection direction="left">
+                <section className="py-16 px-6 bg-white">
+                    <h2 className="text-2xl font-bold text-center mb-6">
+                        Participants Data (From Django)
+                    </h2>
 
-                <div className="max-w-4xl mx-auto space-y-4">
-                    {participants.length === 0 ? (
-                        <p className="text-center text-gray-500">No data found</p>
-                    ) : (
-                        participants.map((p) => (
-                            <div
-                                key={p.id}
-                                className="p-4 border rounded-xl shadow bg-blue-50"
-                            >
-                                <p><b>Name:</b> {p.name}</p>
-                                <p><b>Email:</b> {p.email}</p>
-                                <p><b>Idea:</b> {p.idea}</p>
-                            </div>
-                        ))
-                    )}
-                </div>
-            </section>
+                    <div className="max-w-4xl mx-auto space-y-4">
+                        {participants.length === 0 ? (
+                            <p className="text-center text-gray-500">No data found</p>
+                        ) : (
+                            participants.map((p) => (
+                                <div
+                                    key={p.id}
+                                    className="p-4 border rounded-xl shadow bg-blue-50"
+                                >
+                                    <p><b>Name:</b> {p.name}</p>
+                                    <p><b>Email:</b> {p.email}</p>
+                                    <p><b>Idea:</b> {p.idea}</p>
+                                </div>
+                            ))
+                        )}
+                    </div>
+                </section>
+            </FadeUpSection>
 
             {/* FOOTER */}
             <footer className="text-center py-6 text-gray-500 text-sm">

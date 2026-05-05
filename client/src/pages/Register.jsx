@@ -6,6 +6,7 @@ import Step3Proposal from "../components/register/Step3Proposal";
 import Step4Partner from "../components/register/Step4Partner";
 import Step5Proposal from "../components/register/Step5Proposal";
 import Step6Review from "../components/register/Step6Review";
+import { logoutSession } from "../components/SessionTimer";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -541,11 +542,7 @@ export default function Register() {
      LOGOUT
   ================================= */
   const handleLogout = () => {
-    localStorage.removeItem("isLoggedIn");
-    localStorage.removeItem("token");
-    localStorage.removeItem("username");
-    localStorage.removeItem("registrationStep");
-    localStorage.removeItem("formData");
+    logoutSession();
     navigate("/");
   };
 

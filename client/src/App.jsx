@@ -8,10 +8,12 @@ import ViewSubmittedForm from "./pages/ViewSubmittedForm";
 import Gallery from "./pages/Gallery";
 import FAQ from "./components/FAQ";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
+import SessionTimer from "./components/SessionTimer";
 
 function App() {
   return (
     <div>
+      <SessionTimer />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
